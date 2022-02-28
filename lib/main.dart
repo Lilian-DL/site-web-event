@@ -1,20 +1,21 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:universal_html/js.dart';
 import 'package:web_plan/widgets/routes/IntroScreen/intro_screen.dart';
+import 'package:web_plan/widgets/routes/adminCreateEvent/admin_create_event.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    // ignore: prefer_const_constructors
-    options: FirebaseOptions(
-      apiKey: "AIzaSyBol5HwITYnRCjmhqUM9XzgWwFT0s71YUs",
-  authDomain: "planification-8efe7.firebaseapp.com",
-  projectId: "planification-8efe7",
-  storageBucket: "planification-8efe7.appspot.com",
-  messagingSenderId: "18890479583",
-  appId: "1:18890479583:web:e3201f338b83f2af07966a")
-  );
+      // ignore: prefer_const_constructors
+      options: FirebaseOptions(
+          apiKey: "AIzaSyBol5HwITYnRCjmhqUM9XzgWwFT0s71YUs",
+          authDomain: "planification-8efe7.firebaseapp.com",
+          projectId: "planification-8efe7",
+          storageBucket: "planification-8efe7.appspot.com",
+          messagingSenderId: "18890479583",
+          appId: "1:18890479583:web:e3201f338b83f2af07966a"));
   runApp(const MyApp());
   // ignore: prefer_const_constructors
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -32,7 +33,33 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Application de planification',
       theme: ThemeData(),
-      home: IntroScreen(),
+      initialRoute: '/',
+      onGenerateRoute: (settings) => RouteGenerator.generateRoute(settings),
+    );
+  }
+}
+
+class RouteGenerator {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch(settings.name) {
+      case '/' :
+        return MaterialPageRoute(builder: (context) => IntroScreen());
+      
+      case '/create_event':
+        return MaterialPageRoute(builder: (context) => CreateEventScreen());
+      default:
+        return pageNotFound();
+    }
+  }
+
+  static MaterialPageRoute pageNotFound() {
+    return MaterialPageRoute(
+        builder: (context) => Scaffold(
+            appBar: AppBar(title:Text("Error"), centerTitle: true),
+            body: Center(
+              child: Text("Page not found"),
+            )
+        )
     );
   }
 }
