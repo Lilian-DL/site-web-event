@@ -33,7 +33,7 @@ class _EventList extends State<EventList> {
 
   late List<CollapsibleItem> _items;
   late String _headline;
-  AssetImage _avatarImg = AssetImage('assets/man.png');
+  AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
 
   @override
   void initState() {
@@ -45,15 +45,10 @@ class _EventList extends State<EventList> {
   List<CollapsibleItem> get _generateItems {
     return [
       CollapsibleItem(
-        text: 'Dashboard',
-        icon: Icons.assessment,
-        onPressed: () => setState(() => _headline = 'DashBoard'),
-        isSelected: true,
-      ),
-      CollapsibleItem(
         text: 'Search',
         icon: Icons.search,
         onPressed: () => setState(() => _headline = 'Search'),
+        isSelected: true,
       ),
       CollapsibleItem(
         text: 'Notifications',

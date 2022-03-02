@@ -45,20 +45,10 @@ class _AdminEventList extends State<AdminEventList> {
   List<CollapsibleItem> get _generateItems {
     return [
       CollapsibleItem(
-        text: 'Dashboard',
-        icon: Icons.assessment,
-        onPressed: () => setState(() => _headline = 'DashBoard'),
-        isSelected: true,
-      ),
-      CollapsibleItem(
         text: 'Search',
         icon: Icons.search,
         onPressed: () => setState(() => _headline = 'Search'),
-      ),
-      CollapsibleItem(
-        text: 'Notifications',
-        icon: Icons.notifications,
-        onPressed: () => setState(() => _headline = 'Notifications'),
+        isSelected: true,
       ),
       CollapsibleItem(
         text: 'Settings',
@@ -74,11 +64,6 @@ class _AdminEventList extends State<AdminEventList> {
         text: 'Event',
         icon: Icons.event,
         onPressed: () => setState(() => _headline = 'Event'),
-      ),
-      CollapsibleItem(
-        text: 'Email',
-        icon: Icons.email,
-        onPressed: () => setState(() => _headline = 'Email'),
       ),
       CollapsibleItem(
         text: 'Face',
