@@ -2,6 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web_plan/widgets/routes/IntroScreen/intro_screen.dart';
+import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
+import 'package:web_plan/widgets/routes/eventDetails/event_details.dart';
+import 'package:web_plan/widgets/routes/eventList/event_list.dart';
+import 'package:web_plan/widgets/routes/login/login.dart';
 import 'package:web_plan/widgets/routes/register/register.dart';
 
 void main() async {
@@ -32,7 +36,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Application de planification',
       theme: ThemeData(),
-      home: Register(),
+      home: const AdminEventList(),
     );
   }
 }
