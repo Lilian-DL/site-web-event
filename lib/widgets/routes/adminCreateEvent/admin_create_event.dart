@@ -1,6 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
-
 
 class CreateEventScreen extends StatefulWidget {
   CreateEventScreen({Key? key}) : super(key: key);
@@ -17,7 +18,15 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   final adressController = TextEditingController();
   String message1 = 'Drop something here';
   bool highlighted1 = false;
+  late DateTime pickedDate;
+  late TimeOfDay time;
 
+  @override
+  void initState() {
+    super.initState();
+    pickedDate = DateTime.now();
+    time = TimeOfDay.now();
+  }
 
   @override
   void dispose() {
@@ -104,15 +113,35 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       ],
                     ),
                   ),
-              ),
-
+                ),
                 ElevatedButton(
-                onPressed: () async {
-                  print(await controller1.pickFiles(mime: ['image/jpeg', 'image/png']));
-                },
-                child: const Text('Pick file'),
-              ),
-                SizedBox(height: 8.0),
+                  onPressed: () async {
+                    print(await controller1
+                        .pickFiles(mime: ['image/jpeg', 'image/png']));
+                  },
+                  child: const Text('Pick file'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      ListTile(
+                        title: Text(
+                            "Date of event :  ${pickedDate.day}, ${pickedDate.month}, ${pickedDate.year}"),
+                        trailing: Icon(Icons.keyboard_arrow_down),
+                        onTap: _pickDate,
+                      ),
+                      ListTile(
+                        title: Text(
+                            "Hour of event :  ${time.hour}:${time.minute}"),
+                        trailing: Icon(Icons.keyboard_arrow_down),
+                        onTap: _pickTime,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 50.0),
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
@@ -125,6 +154,31 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 )
               ],
             )));
+  }
+
+  _pickDate() async {
+    DateTime? date = await showDatePicker(
+      context: context,
+      firstDate: DateTime(DateTime.now().year - 5),
+      lastDate: DateTime(DateTime.now().year + 5),
+      initialDate: pickedDate,
+    );
+    if (date != null)
+      // ignore: curly_braces_in_flow_control_structures
+      setState(() {
+        pickedDate = date;
+      });
+  } 
+  _pickTime() async {
+    TimeOfDay? t = await showTimePicker(
+      context: context,
+      initialTime: time,
+    );
+    if (t != null)
+      // ignore: curly_braces_in_flow_control_structures
+      setState(() {
+        time = t;
+      });
   }
 
   Widget buildZone1(BuildContext context) => Builder(
@@ -156,5 +210,4 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           },
         ),
       );
-
 }
