@@ -94,7 +94,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Expanded(
                   child: Container(
                     height: 100.0,
                     color: highlighted1 ? Colors.grey[400] : Colors.transparent,
@@ -107,7 +106,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
               ),
 
-                ),
                 ElevatedButton(
                 onPressed: () async {
                   print(await controller1.pickFiles(mime: ['image/jpeg', 'image/png']));
