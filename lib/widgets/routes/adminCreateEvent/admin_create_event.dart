@@ -150,16 +150,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: peopleController,
-                    keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       labelText: 'People Max',
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
-                    inputFormatters: <TextInputFormatter>[
-                      WhitelistingTextInputFormatter.allow(RegExp(r'[0-9]')),
-                      ],
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter a max people on this event ';
