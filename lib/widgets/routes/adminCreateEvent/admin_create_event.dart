@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 
 class CreateEventScreen extends StatefulWidget {
@@ -16,10 +17,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   final titleController = TextEditingController();
   final detailController = TextEditingController();
   final adressController = TextEditingController();
+  final peopleController = TextEditingController();
   String message1 = 'Drop something here';
   bool highlighted1 = false;
   late DateTime pickedDate;
   late TimeOfDay time;
+  int _currentHorizontalIntValue = 10;
+
+  var WhitelistingTextInputFormatter;
 
   @override
   void initState() {
@@ -139,6 +144,28 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         onTap: _pickTime,
                       ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: peopleController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'People Max',
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                    ),
+                    inputFormatters: <TextInputFormatter>[
+                      WhitelistingTextInputFormatter.allow(RegExp(r'[0-9]')),
+                      ],
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a max people on this event ';
+                      }
+                      return null;
+                    },
                   ),
                 ),
                 SizedBox(height: 50.0),
