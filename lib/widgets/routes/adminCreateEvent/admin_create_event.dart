@@ -44,9 +44,38 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Form(
+        body: Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(50),
+          decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromRGBO(36, 45, 165, 1),
+                Color.fromRGBO(39, 50, 207, 1),
+                Color.fromRGBO(13, 19, 102, 1)
+              ]),
+        ),
             key: formKey,
-            child: ListView(
+            child: Container(
+            width: 600,
+            height: 800,
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.6),
+                    spreadRadius: 5,
+                    blurRadius: 29,
+                    offset: Offset(0, 0))
+              ],
+            ),
+              child :Column(
+                
+                
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -175,7 +204,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                 )
               ],
-            )));
+            ),
+            ),
+            ),
+            );
   }
 
   _pickDate() async {
