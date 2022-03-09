@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 
 class CreateEventScreen extends StatefulWidget {
