@@ -51,9 +51,11 @@ class _EditEventScreenState extends State<EditEventScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    // initialValue:'business_name' ?? '',
                     controller: titleController,
                     decoration: const InputDecoration(
-                      labelText: 'Title',
+                      // labelText: 'Title',
+                      hintText: "Title Of Event",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -71,7 +73,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   child: TextFormField(
                     controller: detailController,
                     decoration: const InputDecoration(
-                      labelText: 'Detail',
+                      // labelText: 'Detail',
+                      hintText: "Details Of Event",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -92,7 +95,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   child: TextFormField(
                     controller: adressController,
                     decoration: const InputDecoration(
-                      labelText: 'Adress',
+                      // labelText: 'Adress',
+                      hintText: "Adress Of Event",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -150,7 +154,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   child: TextFormField(
                     controller: peopleController,
                     decoration: const InputDecoration(
-                      labelText: 'People Max',
+                      // labelText: 'People Max',
+                      hintText: "Nb Of People",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),

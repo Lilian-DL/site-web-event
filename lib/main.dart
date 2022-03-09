@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web_plan/widgets/routes/IntroScreen/intro_screen.dart';
 import 'package:web_plan/widgets/routes/adminCreateEvent/admin_create_event.dart';
+import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
 import 'package:web_plan/widgets/routes/adminModifyEvent/admin_modify_event.dart';
+import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +51,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => CreateEventScreen());
       case '/event/edit':
         return MaterialPageRoute(builder: (context) => EditEventScreen());
+      case '/eventlist':
+        return MaterialPageRoute(builder: (context) => EventList());
+      case '/admin/eventlist':
+        return MaterialPageRoute(builder: (context) => AdminEventList());
 
       default:
         return pageNotFound();
