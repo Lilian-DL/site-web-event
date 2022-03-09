@@ -6,6 +6,7 @@ import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
 import 'package:web_plan/widgets/routes/eventDetails/event_details.dart';
 import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 import 'package:web_plan/widgets/routes/login/login.dart';
+import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
 import 'package:web_plan/widgets/routes/register/register.dart';
 
 void main() async {

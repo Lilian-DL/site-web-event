@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 import 'dart:math' as math show pi;
 
+import 'package:web_plan/responsive_layout.dart';
+
 class EventList extends StatefulWidget {
   const EventList({Key? key}) : super(key: key);
 
@@ -140,7 +142,12 @@ class _EventList extends State<EventList> {
               fontWeight: FontWeight.w900),
         ),
       ),
-      body: Container(
+      body:
+          //ResponsiveLayout(
+          // mobileBody: MyCustomMobileContent(),
+          // desktopBody: MyCustomDesktopContent()),
+
+          Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -161,7 +168,7 @@ class _EventList extends State<EventList> {
             //
             Container(
               height: 230,
-              margin: const EdgeInsets.only(left: 18.0, right: 18.0),
+              margin: const EdgeInsets.only(left: 25.0, right: 25.0),
               padding: const EdgeInsets.only(
                 top: 2,
                 bottom: 2,
@@ -352,3 +359,23 @@ class _EventList extends State<EventList> {
     );
   }
 }
+
+// class MyCustomMobileContent extends StatelessWidget {
+//   const MyCustomMobileContent({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(backgroundColor: Colors.blue);
+//   }
+// }
+
+// class MyCustomDesktopContent extends StatelessWidget {
+//   const MyCustomDesktopContent({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.red,
+//     );
+//   }
+// }
