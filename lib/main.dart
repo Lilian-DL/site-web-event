@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Application de planification',
       theme: ThemeData(),
-      home: const AdminEventList(),
+      home: const ProfilePage(),
     );
   }
 }

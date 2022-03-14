@@ -360,22 +360,22 @@ class _EventList extends State<EventList> {
   }
 }
 
-// class MyCustomMobileContent extends StatelessWidget {
-//   const MyCustomMobileContent({Key? key}) : super(key: key);
+class MyCustomMobileContent extends StatelessWidget {
+  const MyCustomMobileContent({Key? key}) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(backgroundColor: Colors.blue);
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(backgroundColor: Colors.blue);
+  }
+}
 
-// class MyCustomDesktopContent extends StatelessWidget {
-//   const MyCustomDesktopContent({Key? key}) : super(key: key);
+class MyCustomDesktopContent extends StatelessWidget {
+  const MyCustomDesktopContent({Key? key}) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.red,
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.red,
+    );
+  }
+}
