@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
+import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 
 class EditEventScreen extends StatefulWidget {
   EditEventScreen({Key? key}) : super(key: key);
@@ -25,11 +26,16 @@ class _EditEventScreenState extends State<EditEventScreen> {
 
   var WhitelistingTextInputFormatter;
 
+late List<CollapsibleItem> _items;
+  late String _headline;
+  AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
   @override
   void initState() {
     super.initState();
     pickedDate = DateTime.now();
     time = TimeOfDay.now();
+    _items = _generateItems;
+    _headline = _items.firstWhere((item) => item.isSelected).text;
   }
 
   @override
@@ -41,21 +47,150 @@ class _EditEventScreenState extends State<EditEventScreen> {
     super.dispose();
   }
 
+  List<CollapsibleItem> get _generateItems {
+    return [
+      CollapsibleItem(
+        text: 'Search',
+        icon: Icons.search,
+        onPressed: () => setState(() => _headline = 'Search'),
+        isSelected: true,
+      ),
+      CollapsibleItem(
+        text: 'Notifications',
+        icon: Icons.notifications,
+        onPressed: () => setState(() => _headline = 'Notifications'),
+      ),
+      CollapsibleItem(
+        text: 'Settings',
+        icon: Icons.settings,
+        onPressed: () => setState(() => _headline = 'Settings'),
+      ),
+      CollapsibleItem(
+        text: 'Home',
+        icon: Icons.home,
+        onPressed: () => setState(() => _headline = 'Home'),
+      ),
+      CollapsibleItem(
+        text: 'Event',
+        icon: Icons.event,
+        onPressed: () => setState(() => _headline = 'Event'),
+      ),
+      CollapsibleItem(
+        text: 'Email',
+        icon: Icons.email,
+        onPressed: () => setState(() => _headline = 'Email'),
+      ),
+      CollapsibleItem(
+        text: 'Face',
+        icon: Icons.face,
+        onPressed: () => setState(() => _headline = 'Face'),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
-        body: Form(
-            key: formKey,
+      appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(36, 45, 165, 1),
+        elevation: 0.0,
+        title: const Text(
+          'Edition d\'un événement :',
+          style: TextStyle(
+              fontSize: 35,
+              fontFamily: 'Roboto',
+              color: Colors.white,
+              fontWeight: FontWeight.w900),
+        ),
+      ),
+        body: Container(
+          alignment: Alignment.center,
+          // padding: const EdgeInsets.all(50),
+          decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromRGBO(36, 45, 165, 1),
+                Color.fromRGBO(39, 50, 207, 1),
+                Color.fromRGBO(13, 19, 102, 1)
+              ]),
+        ),
+
+      child: CollapsibleSidebar(
+          isCollapsed: true,
+          items: _items,
+          avatarImg: _avatarImg,
+          title: 'Dashboard',
+          onTitleTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Yay! Flutter Collapsible Sidebar!')));
+          },
+          body: _body(size, context),
+          backgroundColor: Colors.white,
+          selectedTextColor: Colors.white,
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontStyle: FontStyle.italic,
+            color: Colors.black,
+          ),
+          titleStyle: const TextStyle(
+              fontSize: 20,
+              fontStyle: FontStyle.italic,
+              color: Colors.black,
+              fontWeight: FontWeight.bold),
+          // toggleTitleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        ),    
+        );
+  }
+
+
+Widget _body(Size size, BuildContext context) {
+    return Scaffold(
+      
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromRGBO(36, 45, 165, 1),
+                Color.fromRGBO(39, 50, 207, 1),
+                Color.fromRGBO(13, 19, 102, 1)
+              ]),
+        ),
+        padding: const EdgeInsets.only(left:75,right:75,top:0,bottom:0),
+        alignment: Alignment.center,
+        key: formKey,
             child: ListView(
+              children: <Widget>[
+                SizedBox(height:50),
+                Container(
+            width: 800,
+            height: 700,
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.6),
+                    spreadRadius: 5,
+                    blurRadius: 29,
+                    offset: Offset(0, 0))
+              ],
+            ),
+              child :Column(
+                
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    // initialValue:'business_name' ?? '',
                     controller: titleController,
                     decoration: const InputDecoration(
-                      // labelText: 'Title',
-                      hintText: "Title Of Event",
+                      hintText: "Title",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -73,8 +208,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   child: TextFormField(
                     controller: detailController,
                     decoration: const InputDecoration(
-                      // labelText: 'Detail',
-                      hintText: "Details Of Event",
+                      hintText: "Detail",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -95,8 +229,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   child: TextFormField(
                     controller: adressController,
                     decoration: const InputDecoration(
-                      // labelText: 'Adress',
-                      hintText: "Adress Of Event",
+                      hintText: "Adress",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -136,13 +269,13 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     children: <Widget>[
                       ListTile(
                         title: Text(
-                            "Date of event :  ${pickedDate.day}, ${pickedDate.month}, ${pickedDate.year}"),
+                            "Date :  ${pickedDate.day}, ${pickedDate.month}, ${pickedDate.year}"),
                         trailing: Icon(Icons.keyboard_arrow_down),
                         onTap: _pickDate,
                       ),
                       ListTile(
                         title: Text(
-                            "Hour of event :  ${time.hour}:${time.minute}"),
+                            "Hour :  ${time.hour}:${time.minute}"),
                         trailing: Icon(Icons.keyboard_arrow_down),
                         onTap: _pickTime,
                       ),
@@ -154,8 +287,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   child: TextFormField(
                     controller: peopleController,
                     decoration: const InputDecoration(
-                      // labelText: 'People Max',
-                      hintText: "Nb Of People",
+                      hintText: "People Max",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -168,7 +300,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 50.0),
+                SizedBox(height: 20.0),
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
@@ -180,10 +312,15 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   ),
                 )
               ],
-            )));
-  }
+            ),
+            ),
+              ]
+            ) 
+            ),
+    );
+}
 
-  _pickDate() async {
+_pickDate() async {
     DateTime? date = await showDatePicker(
       context: context,
       firstDate: DateTime(DateTime.now().year - 5),
