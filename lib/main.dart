@@ -2,12 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web_plan/widgets/routes/IntroScreen/intro_screen.dart';
-import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
-import 'package:web_plan/widgets/routes/eventDetails/event_details.dart';
-import 'package:web_plan/widgets/routes/eventList/event_list.dart';
-import 'package:web_plan/widgets/routes/login/login.dart';
-import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
-import 'package:web_plan/widgets/routes/register/register.dart';
+import 'package:web_plan/widgets/routes/adminCreateEvent/admin_create_event.dart';
+import 'package:web_plan/widgets/routes/adminModifyEvent/admin_modify_event.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +33,34 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Application de planification',
       theme: ThemeData(),
-      home: const ProfilePage(),
+      initialRoute: '/',
+      onGenerateRoute: (settings) => RouteGenerator.generateRoute(settings),
     );
+  }
+}
+
+class RouteGenerator {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case '/':
+        return MaterialPageRoute(builder: (context) => IntroScreen());
+
+      case '/event/create':
+        return MaterialPageRoute(builder: (context) => CreateEventScreen());
+      case '/event/edit':
+        return MaterialPageRoute(builder: (context) => EditEventScreen());
+
+      default:
+        return pageNotFound();
+    }
+  }
+
+  static MaterialPageRoute pageNotFound() {
+    return MaterialPageRoute(
+        builder: (context) => Scaffold(
+            appBar: AppBar(title: Text("Error"), centerTitle: true),
+            body: Center(
+              child: Text("Page not found"),
+            )));
   }
 }
