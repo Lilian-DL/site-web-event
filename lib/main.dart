@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web_plan/widgets/routes/IntroScreen/intro_screen.dart';
 import 'package:web_plan/widgets/routes/adminCreateEvent/admin_create_event.dart';
+import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
 import 'package:web_plan/widgets/routes/adminModifyEvent/admin_modify_event.dart';
+import 'package:web_plan/widgets/routes/eventDetails/event_details.dart';
+import 'package:web_plan/widgets/routes/eventList/event_list.dart';
+import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +54,18 @@ class RouteGenerator {
       case '/event/edit':
         return MaterialPageRoute(builder: (context) => EditEventScreen());
 
+      case '/profilePage':
+        return MaterialPageRoute(builder: (context) => const ProfilePage());
+
+      case '/event/list/admin':
+        return MaterialPageRoute(builder: (context) => const AdminEventList());
+
+      case '/event/list/user':
+        return MaterialPageRoute(builder: (context) => const EventList());
+
+      case '/event/details':
+        return MaterialPageRoute(builder: (context) => const EventDetails());
+
       default:
         return pageNotFound();
     }
@@ -58,8 +74,8 @@ class RouteGenerator {
   static MaterialPageRoute pageNotFound() {
     return MaterialPageRoute(
         builder: (context) => Scaffold(
-            appBar: AppBar(title: Text("Error"), centerTitle: true),
-            body: Center(
+            appBar: AppBar(title: const Text("Error"), centerTitle: true),
+            body: const Center(
               child: Text("Page not found"),
             )));
   }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+//import 'package:flutter/rendering.dart';
+//import 'package:flutter/widgets.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
-import 'dart:math' as math show pi;
 
 import 'package:web_plan/responsive_layout.dart';
 
@@ -153,7 +152,7 @@ class MyCustomMobileContent extends StatelessWidget {
           // ---------- Container De l'event ----------
           //
           Container(
-            height: 230,
+            height: 260,
             margin: const EdgeInsets.only(left: 18.0, right: 18.0),
             padding: const EdgeInsets.only(
               top: 2,
@@ -194,7 +193,7 @@ class MyCustomMobileContent extends StatelessWidget {
                     // ---------- Container des informations de l'event ----------
                     //
                     Container(
-                      height: 185,
+                      height: 225,
                       padding: const EdgeInsets.all(10),
                       margin: const EdgeInsets.only(
                           top: 2, left: 5, right: 5, bottom: 2),
@@ -254,7 +253,7 @@ class MyCustomMobileContent extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(
-                                  height: 20,
+                                  height: 15,
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -262,12 +261,12 @@ class MyCustomMobileContent extends StatelessWidget {
                                     TextButton.icon(
                                       onPressed: () {},
                                       icon: const Icon(Icons.edit),
-                                      label: const Text("Plus d'infos"),
+                                      label: const Text("Gérer"),
                                       style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all<Color>(
-                                          const Color.fromRGBO(
-                                              140, 140, 140, 1),
+                                          const Color.fromARGB(
+                                              255, 11, 17, 105),
                                         ),
                                         foregroundColor:
                                             MaterialStateProperty.all<Color>(
@@ -285,7 +284,8 @@ class MyCustomMobileContent extends StatelessWidget {
                                       style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all<Color>(
-                                          const Color.fromRGBO(3, 110, 20, 1),
+                                          const Color.fromARGB(
+                                              255, 199, 16, 16),
                                         ),
                                         foregroundColor:
                                             MaterialStateProperty.all<Color>(
@@ -417,19 +417,24 @@ class MyCustomDesktopContent extends StatelessWidget {
                             ),
                             Column(
                               children: [
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: const [
-                                      Icon(Icons.calendar_today_rounded),
-                                      Text(
-                                        "25/01/2022",
-                                        style: TextStyle(fontSize: 16),
-                                      )
-                                    ]),
+                                const SizedBox(
+                                  height: 20,
+                                ),
                                 Row(
                                   children: const [
+                                    Icon(Icons.calendar_today_rounded),
+                                    Text(
+                                      "25/01/2022",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
                                     Icon(Icons.people_alt),
                                     Text("28", style: TextStyle(fontSize: 16)),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
                                     Icon(Icons.place),
                                     Text("adresse de l'événement",
                                         style: TextStyle(fontSize: 16)),

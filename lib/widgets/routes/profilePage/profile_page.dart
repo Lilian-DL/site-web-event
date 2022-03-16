@@ -1,8 +1,5 @@
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
-import 'package:collapsible_sidebar/collapsible_sidebar/collapsible_item.dart';
 import 'package:flutter/material.dart';
-
-import '../../../responsive_layout.dart';
 
 // class ProfilePage extends StatelessWidget {
 //   const ProfilePage({Key? key}) : super(key: key);
@@ -36,8 +33,6 @@ import '../../../responsive_layout.dart';
 //     );
 //   }
 // }
-
-import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -132,8 +127,8 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             // ---------- Bannière ---------- //
             Container(
-              margin: EdgeInsets.only(left: 50, right: 50),
-              padding: EdgeInsets.all(20),
+              margin: const EdgeInsets.only(left: 50, right: 50),
+              padding: const EdgeInsets.all(20),
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: NetworkImage(
