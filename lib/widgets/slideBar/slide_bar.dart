@@ -73,7 +73,7 @@ class _SlideBarState extends State<SlideBar> {
         },
       ),
       CollapsibleItem(
-        text: 'Mon Profile',
+        text: 'Mon Profil',
         icon: Icons.home,
         onPressed: () {
           Navigator.push(
@@ -156,6 +156,7 @@ class _SlideBarState extends State<SlideBar> {
       //       content: Text('Yay! Flutter Collapsible Sidebar!')));
       // },
       body: const Center(child: Center()),
+      toggleTitle : 'Close',
       backgroundColor: Colors.white,
       selectedTextColor: Colors.white,
       selectedIconBox: const Color.fromRGBO(30,64,175,1),
@@ -163,6 +164,13 @@ class _SlideBarState extends State<SlideBar> {
       unselectedIconColor: const Color(0xff2B3138),
       unselectedTextColor: const Color(0xff2B3138),
 
+      sidebarBoxShadow : const [BoxShadow(
+      color: Colors.black,
+      blurRadius: 20,
+      spreadRadius: 0.01,
+      offset: Offset(3, 3),
+    ),],
+    
       textStyle: const TextStyle(
         fontSize: 15,
         fontStyle: FontStyle.italic,
