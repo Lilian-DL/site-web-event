@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Application de planification',
       theme: ThemeData(),
-      initialRoute: '/',
+      initialRoute: '/event/list/user',
       onGenerateRoute: (settings) => RouteGenerator.generateRoute(settings),
     );
   }
