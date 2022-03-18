@@ -158,6 +158,11 @@ class _SlideBarState extends State<SlideBar> {
       body: const Center(child: Center()),
       backgroundColor: Colors.white,
       selectedTextColor: Colors.white,
+      selectedIconBox: const Color.fromRGBO(30,64,175,1),
+      selectedIconColor: const Color(0xffF3F7F7),
+      unselectedIconColor: const Color(0xff2B3138),
+      unselectedTextColor: const Color(0xff2B3138),
+
       textStyle: const TextStyle(
         fontSize: 15,
         fontStyle: FontStyle.italic,
