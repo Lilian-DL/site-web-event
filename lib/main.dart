@@ -7,8 +7,9 @@ import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
 import 'package:web_plan/widgets/routes/adminModifyEvent/admin_modify_event.dart';
 import 'package:web_plan/widgets/routes/eventDetails/event_details.dart';
 import 'package:web_plan/widgets/routes/eventList/event_list.dart';
+import 'package:web_plan/widgets/routes/login/login.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
-
+import 'package:web_plan/widgets/routes/register/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +50,12 @@ class RouteGenerator {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (context) => IntroScreen());
+
+      case '/login':
+        return MaterialPageRoute(builder: (context) => Login());
+
+      case '/inscription':
+        return MaterialPageRoute(builder: (context) => Inscription());
 
       case '/profile':
         return MaterialPageRoute(builder: (context) => const ProfilePage());
