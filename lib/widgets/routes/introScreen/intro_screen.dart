@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
-
 import '../eventList/event_list.dart';
-import '../login/login.dart';
 
 class IntroScreen extends StatelessWidget {
   @override

@@ -1,8 +1,7 @@
-//import 'package:app_plan/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:web_plan/services/auth.dart';
 import '../eventList/event_list.dart';
 
 class Inscription extends StatefulWidget {
@@ -13,7 +12,7 @@ class Inscription extends StatefulWidget {
 }
 
 class _Inscription extends State<Inscription> {
-  //final AuthService auth = AuthService();
+  final AuthService auth = AuthService();
   final myControllerEmail = TextEditingController();
   final myControllerNom = TextEditingController();
   final myControllerPassWord = TextEditingController();
@@ -172,15 +171,14 @@ class _Inscription extends State<Inscription> {
                   //
                   TextButton(
                     child: const Text("S'inscrire"),
-                    onPressed: () /*async*/ {
-                      /*
+                    onPressed: () async {
                       if (myControllerEmail.text.isNotEmpty &&
                           myControllerPassWord.text.isNotEmpty &&
                           myControllerNom.text.isNotEmpty &&
                           myControllerPrenom.text.isNotEmpty) {
                         final user = await auth.registerWithEmailAndPassword(
                             myControllerEmail.text, myControllerPassWord.text);
-                        await Future.delayed(new Duration(milliseconds: 500),
+                        await Future.delayed(new Duration(milliseconds: 1000),
                             () {
                           if (user == null) {
                             setState(() {
@@ -226,7 +224,7 @@ class _Inscription extends State<Inscription> {
                       } else {
                         print(
                             "Une erreur s'est produite lors de la saisie des informations!");
-                      }*/
+                      }
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(

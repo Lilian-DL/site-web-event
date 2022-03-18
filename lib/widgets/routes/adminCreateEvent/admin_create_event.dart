@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:web_plan/widgets/slideBar/slide_bar.dart';
@@ -131,12 +132,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter a title';
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 Padding(
@@ -152,12 +147,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     keyboardType: TextInputType.multiline,
                     minLines: 5,
                     maxLines: 10,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter a detail';
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 Padding(
@@ -170,12 +159,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter a adress ';
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 Padding(
@@ -227,20 +210,24 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter a max people on this event ';
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 SizedBox(height: 20.0),
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        // Recipe recipe = Recipe(titleController.value.text, detailController.value.text, adressController.value.text,);
+                      if (titleController.text.isNotEmpty &&
+                          detailController.text.isNotEmpty &&
+                          adressController.text.isNotEmpty &&
+                          peopleController.text.isNotEmpty) {
+                        addEvent(
+                            titleController.text,
+                            detailController.text,
+                            adressController.text,
+                            peopleController.text,
+                            pickedDate);
+                      } else {
+                        print("error");
                       }
                     },
                     child: Text('Save'),
@@ -308,4 +295,20 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           },
         ),
       );
+}
+
+Future<void> addEvent(title, description, location, peopleLimit, date) {
+  CollectionReference users = FirebaseFirestore.instance.collection('Event');
+  return users
+      .doc()
+      .set({
+        'Title': title,
+        'Description': description,
+        'Location': location,
+        'Date': date,
+        'Picture': "",
+        'PeopleLimit': peopleLimit,
+      })
+      .then((value) => print("User Event"))
+      .catchError((error) => print("Failed to add event: $error"));
 }

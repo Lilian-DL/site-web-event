@@ -1,8 +1,7 @@
-//import 'package:app_plan/services/auth.dart';
-//import 'package:app_plan/widgets/routes/eventList/event_list.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:web_plan/services/auth.dart';
+import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 
 int itemCount = 5;
 List<bool> selected = <bool>[];
@@ -15,7 +14,7 @@ class Login extends StatefulWidget {
 }
 
 class _Login extends State<Login> {
-  //final AuthService auth = AuthService();
+  final AuthService auth = AuthService();
   final myControllerEmail = TextEditingController();
   final myControllerPassWord = TextEditingController();
   String messageError = "";
@@ -153,10 +152,11 @@ class _Login extends State<Login> {
                   //
                   TextButton(
                     child: const Text("Connexion"),
-                    onPressed: () /*async*/ {
-                      /*auth.signInWithEmailAndPassword(
+                    onPressed: () async {
+                      auth.signInWithEmailAndPassword(
                           myControllerEmail.text, myControllerPassWord.text);
-                      await Future.delayed(new Duration(milliseconds: 500), () {
+                      await Future.delayed(new Duration(milliseconds: 1000),
+                          () {
                         User? _user = FirebaseAuth.instance.currentUser;
                         if (_user != null) {
                           Navigator.pushReplacement(
@@ -173,7 +173,7 @@ class _Login extends State<Login> {
                             messageError = "Une erreur est survenu !";
                           });
                         }
-                      });*/
+                      });
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
