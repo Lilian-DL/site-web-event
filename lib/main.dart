@@ -50,17 +50,14 @@ class RouteGenerator {
       case '/':
         return MaterialPageRoute(builder: (context) => IntroScreen());
 
+      case '/profile':
+        return MaterialPageRoute(builder: (context) => const ProfilePage());
+
       case '/event/create':
         return MaterialPageRoute(builder: (context) => CreateEventScreen());
+
       case '/event/edit':
         return MaterialPageRoute(builder: (context) => EditEventScreen());
-      case '/eventlist':
-        return MaterialPageRoute(builder: (context) => EventList());
-      case '/admin/eventlist':
-        return MaterialPageRoute(builder: (context) => AdminEventList());
-
-      case '/profilePage':
-        return MaterialPageRoute(builder: (context) => const ProfilePage());
 
       case '/event/list/admin':
         return MaterialPageRoute(builder: (context) => const AdminEventList());

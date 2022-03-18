@@ -1,6 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 import 'package:flutter/material.dart';
+import 'package:web_plan/widgets/routes/adminCreateEvent/admin_create_event.dart';
+import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
+import 'package:web_plan/widgets/routes/adminModifyEvent/admin_modify_event.dart';
+import 'package:web_plan/widgets/routes/eventDetails/event_details.dart';
+import 'package:web_plan/widgets/routes/eventList/event_list.dart';
+import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
 
 class SlideBar extends StatefulWidget {
   SlideBar({Key? key}) : super(key: key);
@@ -27,38 +32,76 @@ class _SlideBarState extends State<SlideBar> {
   List<CollapsibleItem> get _generateItems {
     return [
       CollapsibleItem(
-        text: 'Search',
+        text: 'Liste des events',
         icon: Icons.search,
-        onPressed: () => setState(() => _headline = 'Search'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EventList()),
+          );
+        },
         isSelected: true,
       ),
       CollapsibleItem(
-        text: 'Notifications',
+        text: '(A) Édition événement',
         icon: Icons.notifications,
-        onPressed: () => setState(() => _headline = 'Notifications'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EditEventScreen()),
+          );
+        },
       ),
       CollapsibleItem(
-        text: 'Settings',
+        text: '(A) Création événement',
         icon: Icons.settings,
-        onPressed: () => setState(() => _headline = 'Settings'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateEventScreen()),
+          );
+        },
       ),
       CollapsibleItem(
-        text: 'Home',
-        icon: Icons.home,
-        onPressed: () => setState(() => _headline = 'Home'),
-      ),
-      CollapsibleItem(
-        text: 'Event',
+        text: '(A) Liste événement',
         icon: Icons.event,
-        onPressed: () => setState(() => _headline = 'Event'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AdminEventList()),
+          );
+        },
       ),
       CollapsibleItem(
-        text: 'Email',
+        text: 'Mon Profile',
+        icon: Icons.home,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProfilePage()),
+          );
+        },
+      ),
+      
+      CollapsibleItem(
+        text: 'Détails événement',
         icon: Icons.email,
-        onPressed: () => setState(() => _headline = 'Email'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EventDetails()),
+          );
+        },
       ),
+      // CollapsibleItem(
+      //   text: 'Face',
+      //   icon: Icons.face,
+      //   onPressed: () => setState(() => _headline = 'Face'),
+      // ),
+      
       CollapsibleItem(
-        text: 'Face',
+         
+        text: 'Deconexion',
         icon: Icons.face,
         onPressed: () => setState(() => _headline = 'Face'),
       ),
@@ -102,6 +145,12 @@ class _SlideBarState extends State<SlideBar> {
       items: _items,
       avatarImg: _avatarImg,
       title: 'Dashboard',
+      onTitleTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => EventList()),
+        );
+      },
       // onTitleTap: () {
       //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //       content: Text('Yay! Flutter Collapsible Sidebar!')));
