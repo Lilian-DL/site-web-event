@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 import 'package:flutter/material.dart';
 
-class NavBar extends StatefulWidget {
-  NavBar({Key? key}) : super(key: key);
+class SlideBar extends StatefulWidget {
+  SlideBar({Key? key}) : super(key: key);
 
   @override
-  State<NavBar> createState() => _NavBarState();
+  State<SlideBar> createState() => _SlideBarState();
 }
 
-class _NavBarState extends State<NavBar> {
+class _SlideBarState extends State<SlideBar> {
   final formKey = GlobalKey<FormState>();
 
   late List<CollapsibleItem> _items;
@@ -68,74 +68,76 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: const Color.fromRGBO(36, 45, 165, 1),
-      //   elevation: 0.0,
-      //   title: const Text(
-      //     'Edition d\'un événement :',
-      //     style: TextStyle(
-      //         fontSize: 35,
-      //         fontFamily: 'Roboto',
-      //         color: Colors.white,
-      //         fontWeight: FontWeight.w900),
-      //   ),
-      // ),
-      body: Container(
-        alignment: Alignment.center,
-        // padding: const EdgeInsets.all(50),
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color.fromRGBO(36, 45, 165, 1),
-                Color.fromRGBO(39, 50, 207, 1),
-                Color.fromRGBO(13, 19, 102, 1)
-              ]),
-        ),
+    return
+        // Container(
+        // appBar: AppBar(
+        //   backgroundColor: const Color.fromRGBO(36, 45, 165, 1),
+        //   elevation: 0.0,
+        //   title: const Text(
+        //     'Edition d\'un événement :',
+        //     style: TextStyle(
+        //         fontSize: 35,
+        //         fontFamily: 'Roboto',
+        //         color: Colors.white,
+        //         fontWeight: FontWeight.w900),
+        //   ),
+        // ),
+        // child: Container(
+        //   alignment: Alignment.center,
+        //   // padding: const EdgeInsets.all(50),
+        //   decoration: const BoxDecoration(
+        //     gradient: LinearGradient(
+        //         begin: Alignment.topCenter,
+        //         end: Alignment.bottomCenter,
+        //         colors: [
+        //           Color.fromRGBO(36, 45, 165, 1),
+        //           Color.fromRGBO(39, 50, 207, 1),
+        //           Color.fromRGBO(13, 19, 102, 1)
+        //         ]),
+        //   ),
 
-        child: CollapsibleSidebar(
-          isCollapsed: true,
-          items: _items,
-          avatarImg: _avatarImg,
-          title: 'Dashboard',
-          // onTitleTap: () {
-          //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          //       content: Text('Yay! Flutter Collapsible Sidebar!')));
-          // },
-          body: body(size, context),
-          backgroundColor: Colors.red,
-          selectedTextColor: Colors.white,
-          textStyle: const TextStyle(
-            fontSize: 15,
-            fontStyle: FontStyle.italic,
-            color: Colors.black,
-          ),
-          titleStyle: const TextStyle(
-              fontSize: 20,
-              fontStyle: FontStyle.italic,
-              color: Colors.black,
-              fontWeight: FontWeight.bold),
-          // toggleTitleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
+        //child:
+        CollapsibleSidebar(
+      isCollapsed: false,
+      items: _items,
+      avatarImg: _avatarImg,
+      title: 'Dashboard',
+      // onTitleTap: () {
+      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //       content: Text('Yay! Flutter Collapsible Sidebar!')));
+      // },
+      body: const Center(child: Center()),
+      backgroundColor: Colors.white,
+      selectedTextColor: Colors.white,
+      textStyle: const TextStyle(
+        fontSize: 15,
+        fontStyle: FontStyle.italic,
+        color: Colors.black,
       ),
+      titleStyle: const TextStyle(
+          fontSize: 20,
+          fontStyle: FontStyle.italic,
+          color: Colors.black,
+          fontWeight: FontWeight.bold),
+      // toggleTitleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     );
+    // ),
+    //);
   }
 
-  Widget body(Size size, BuildContext context) {
-    return Scaffold(
-      body: Container(
-        // decoration: const BoxDecoration(
-        //   gradient: LinearGradient(
-        //       begin: Alignment.topCenter,
-        //       end: Alignment.bottomCenter,
-        //       colors: [
-        //         Color.fromRGBO(36, 45, 165, 1),
-        //         Color.fromRGBO(39, 50, 207, 1),
-        //         Color.fromRGBO(13, 19, 102, 1)
-        //       ]),
-        // ),
+  // Widget body(Size size, BuildContext context) {
+  //   return Container(
+  //     body: Container(
+  // decoration: const BoxDecoration(
+  //   gradient: LinearGradient(
+  //       begin: Alignment.topCenter,
+  //       end: Alignment.bottomCenter,
+  //       colors: [
+  //         Color.fromRGBO(36, 45, 165, 1),
+  //         Color.fromRGBO(39, 50, 207, 1),
+  //         Color.fromRGBO(13, 19, 102, 1)
+  //       ]),
+  // ),
 //         padding: const EdgeInsets.only(left: 75, right: 75, top: 0, bottom: 0),
 //         alignment: Alignment.center,
 //         // key: formKey,
@@ -160,7 +162,7 @@ class _NavBarState extends State<NavBar> {
 //             ),
 //           ],
 //         ),
-      ),
-    );
-  }
+  // ),
+  // );
+  // }
 }
