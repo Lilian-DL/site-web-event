@@ -331,4 +331,4 @@ packages:
     version: "2.1.1"
 sdks:
   dart: ">=2.16.0-56.0.dev <3.0.0"
-  flutter: ">=1.12.13+hotfix.5"
+  flutter: ">=1.17.0"
