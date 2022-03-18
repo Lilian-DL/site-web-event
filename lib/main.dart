@@ -9,6 +9,7 @@ import 'package:web_plan/widgets/routes/eventDetails/event_details.dart';
 import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -53,6 +54,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => CreateEventScreen());
       case '/event/edit':
         return MaterialPageRoute(builder: (context) => EditEventScreen());
+      case '/eventlist':
+        return MaterialPageRoute(builder: (context) => EventList());
+      case '/admin/eventlist':
+        return MaterialPageRoute(builder: (context) => AdminEventList());
 
       case '/profilePage':
         return MaterialPageRoute(builder: (context) => const ProfilePage());
