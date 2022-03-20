@@ -46,16 +46,6 @@ class _SlideBarState extends State<SlideBar> {
         isSelected: true,
       ),
       CollapsibleItem(
-        text: '(A) Édition événement',
-        icon: Icons.notifications,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => EditEventScreen()),
-          );
-        },
-      ),
-      CollapsibleItem(
         text: '(A) Création événement',
         icon: Icons.settings,
         onPressed: () {
@@ -86,16 +76,6 @@ class _SlideBarState extends State<SlideBar> {
         },
       ),
 
-      CollapsibleItem(
-        text: 'Détails événement',
-        icon: Icons.email,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => EventDetails()),
-          );
-        },
-      ),
       // CollapsibleItem(
       //   text: 'Face',
       //   icon: Icons.face,
