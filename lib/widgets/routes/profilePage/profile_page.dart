@@ -1,5 +1,6 @@
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 import 'package:flutter/material.dart';
+import 'package:web_plan/widgets/slideBar/slide_bar.dart';
 
 // class ProfilePage extends StatelessWidget {
 //   const ProfilePage({Key? key}) : super(key: key);
@@ -50,70 +51,60 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _items = _generateItems;
-    _headline = _items.firstWhere((item) => item.isSelected).text;
   }
 
-  List<CollapsibleItem> get _generateItems {
-    return [
-      CollapsibleItem(
-        text: 'Search',
-        icon: Icons.search,
-        onPressed: () => setState(() => _headline = 'Search'),
-        isSelected: true,
-      ),
-      CollapsibleItem(
-        text: 'Settings',
-        icon: Icons.settings,
-        onPressed: () => setState(() => _headline = 'Settings'),
-      ),
-      CollapsibleItem(
-        text: 'Home',
-        icon: Icons.home,
-        onPressed: () => setState(() => _headline = 'Home'),
-      ),
-      CollapsibleItem(
-        text: 'Event',
-        icon: Icons.event,
-        onPressed: () => setState(() => _headline = 'Event'),
-      ),
-      CollapsibleItem(
-        text: 'Face',
-        icon: Icons.face,
-        onPressed: () => setState(() => _headline = 'Face'),
-      ),
-    ];
-  }
+
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Container(
-        decoration: const BoxDecoration(color: Colors.white),
-        child: CollapsibleSidebar(
-          isCollapsed: true,
-          items: _items,
-          avatarImg: _avatarImg,
-          title: 'Dashboard',
-          onTitleTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text('Yay! Flutter Collapsible Sidebar!')));
-          },
-          body: _body(size, context),
-          backgroundColor: Colors.white,
-          selectedTextColor: Colors.white,
-          textStyle: const TextStyle(
-            fontSize: 15,
-            fontStyle: FontStyle.italic,
-            color: Colors.black,
-          ),
-          titleStyle: const TextStyle(
-              fontSize: 20,
-              fontStyle: FontStyle.italic,
-              color: Colors.black,
-              fontWeight: FontWeight.bold),
-          // toggleTitleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(36, 45, 165, 1),
+        elevation: 0.0,
+        title: const Text(
+          'Page de Profile :',
+          style: TextStyle(
+              fontSize: 35,
+              fontFamily: 'Roboto',
+              color: Colors.white,
+              fontWeight: FontWeight.w900),
+        ),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromRGBO(36, 45, 165, 1),
+                Color.fromRGBO(39, 50, 207, 1),
+                Color.fromRGBO(13, 19, 102, 1)
+              ]),
+        ),
+        child: Row(
+          children: <Widget>[
+            Container(
+                constraints: const BoxConstraints(
+                  maxWidth: double.infinity,
+                  minWidth:100,
+                ),
+              // color : Colors.green,
+                child: SlideBar()
+            ),
+            Expanded(
+                flex: 1, 
+            child :Container(
+              alignment: const FractionalOffset(0.3, 0.4),
+              // color : Colors.purple,
+              height: MediaQuery.of(context).size.height * 1.0,
+              // child: Padding(
+                // padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                child : _body(size, context),
+                // ),
+                ),
+              ),
+          ],
         ),
       ),
     );
