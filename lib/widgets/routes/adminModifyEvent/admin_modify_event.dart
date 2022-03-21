@@ -44,6 +44,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments;
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -74,23 +75,22 @@ class _EditEventScreenState extends State<EditEventScreen> {
             Container(
                 constraints: const BoxConstraints(
                   maxWidth: double.infinity,
-                  minWidth:100,
+                  minWidth: 100,
                 ),
-              // color : Colors.green,
-                child: SlideBar()
-            ),
+                // color : Colors.green,
+                child: SlideBar()),
             Expanded(
-                flex: 1, 
-            child :Container(
-              alignment: const FractionalOffset(0.2, 0.4),
-              // color : Colors.purple,
-              height: MediaQuery.of(context).size.height * 1.0,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                child : _body(size, context),
-                ),
+              flex: 1,
+              child: Container(
+                alignment: const FractionalOffset(0.2, 0.4),
+                // color : Colors.purple,
+                height: MediaQuery.of(context).size.height * 1.0,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                  child: _body(size, context),
                 ),
               ),
+            ),
           ],
         ),
       ),
@@ -98,159 +98,162 @@ class _EditEventScreenState extends State<EditEventScreen> {
   }
 
   Widget _body(Size size, BuildContext context) {
-        return Container(
-            constraints:const BoxConstraints(
-              minHeight: 500.0,
-              minWidth: 500.0,
-              maxHeight: 800.0,
-              maxWidth: 600,
+    return Container(
+        constraints: const BoxConstraints(
+          minHeight: 500.0,
+          minWidth: 500.0,
+          maxHeight: 800.0,
+          maxWidth: 600,
+        ),
+        alignment: Alignment.center,
+        key: formKey,
+        child: ListView(children: <Widget>[
+          SizedBox(height: 50),
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.6),
+                    spreadRadius: 5,
+                    blurRadius: 29,
+                    offset: Offset(0, 0))
+              ],
             ),
-            alignment: Alignment.center,
-            key: formKey,
-            child: ListView(children: <Widget>[
-              SizedBox(height: 50),
-        Container(
-      padding: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(25)),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.6),
-              spreadRadius: 5,
-              blurRadius: 29,
-              offset: Offset(0, 0))
-        ],
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: titleController,
-              decoration: const InputDecoration(
-                hintText: "Title",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
-              ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter a title';
-                }
-                return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: detailController,
-              decoration: const InputDecoration(
-                hintText: "Detail",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
-              ),
-              keyboardType: TextInputType.multiline,
-              minLines: 5,
-              maxLines: 10,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter a detail';
-                }
-                return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: adressController,
-              decoration: const InputDecoration(
-                hintText: "Adress",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
-              ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter a adress ';
-                }
-                return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 100.0,
-              color: highlighted1 ? Colors.grey[400] : Colors.transparent,
-              child: Stack(
-                children: [
-                  buildZone1(context),
-                  Center(child: Text(message1)),
-                ],
-              ),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              print(await controller1
-                  .pickFiles(mime: ['image/jpeg', 'image/png']));
-            },
-            child: const Text('Pick file'),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ListTile(
-                  title: Text(
-                      "Date :  ${pickedDate.day}, ${pickedDate.month}, ${pickedDate.year}"),
-                  trailing: Icon(Icons.keyboard_arrow_down),
-                  onTap: _pickDate,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: titleController,
+                    decoration: const InputDecoration(
+                      hintText: "Title",
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a title';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                ListTile(
-                  title: Text("Hour :  ${time.hour}:${time.minute}"),
-                  trailing: Icon(Icons.keyboard_arrow_down),
-                  onTap: _pickTime,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: detailController,
+                    decoration: const InputDecoration(
+                      hintText: "Detail",
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                    ),
+                    keyboardType: TextInputType.multiline,
+                    minLines: 5,
+                    maxLines: 10,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a detail';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: adressController,
+                    decoration: const InputDecoration(
+                      hintText: "Adress",
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a adress ';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 100.0,
+                    color: highlighted1 ? Colors.grey[400] : Colors.transparent,
+                    child: Stack(
+                      children: [
+                        buildZone1(context),
+                        Center(child: Text(message1)),
+                      ],
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    print(await controller1
+                        .pickFiles(mime: ['image/jpeg', 'image/png']));
+                  },
+                  child: const Text('Pick file'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      ListTile(
+                        title: Text(
+                            "Date :  ${pickedDate.day}, ${pickedDate.month}, ${pickedDate.year}"),
+                        trailing: Icon(Icons.keyboard_arrow_down),
+                        onTap: _pickDate,
+                      ),
+                      ListTile(
+                        title: Text("Hour :  ${time.hour}:${time.minute}"),
+                        trailing: Icon(Icons.keyboard_arrow_down),
+                        onTap: _pickTime,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: peopleController,
+                    decoration: const InputDecoration(
+                      hintText: "People Max",
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a max people on this event ';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        // Recipe recipe = Recipe(titleController.value.text, detailController.value.text, adressController.value.text,);
+                      }
+                    },
+                    child: Text('Save'),
+                  ),
+                ),
+                SizedBox(height: 30.0),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: peopleController,
-              decoration: const InputDecoration(
-                hintText: "People Max",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
-              ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter a max people on this event ';
-                }
-                return null;
-              },
-            ),
-          ),
-          SizedBox(height: 20.0),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  // Recipe recipe = Recipe(titleController.value.text, detailController.value.text, adressController.value.text,);
-                }
-              },
-              child: Text('Save'),
-            ),
-          ),
-        SizedBox(height: 30.0),
-        ],
-        
-      ),
-    ),
-    ]));
+        ]));
   }
 
   _pickDate() async {
