@@ -1,9 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:universal_html/js.dart';
 import 'package:web_plan/widgets/routes/IntroScreen/intro_screen.dart';
 import 'package:web_plan/widgets/routes/adminCreateEvent/admin_create_event.dart';
+import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
+import 'package:web_plan/widgets/routes/adminModifyEvent/admin_modify_event.dart';
+import 'package:web_plan/widgets/routes/eventDetails/event_details.dart';
+import 'package:web_plan/widgets/routes/eventList/event_list.dart';
+import 'package:web_plan/widgets/routes/login/login.dart';
+import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
+import 'package:web_plan/widgets/routes/register/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,12 +47,34 @@ class MyApp extends StatelessWidget {
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch(settings.name) {
-      case '/' :
+    switch (settings.name) {
+      case '/':
         return MaterialPageRoute(builder: (context) => IntroScreen());
-      
-      case '/create_event':
+
+      case '/login':
+        return MaterialPageRoute(builder: (context) => Login());
+
+      case '/inscription':
+        return MaterialPageRoute(builder: (context) => Inscription());
+
+      case '/profile':
+        return MaterialPageRoute(builder: (context) => const ProfilePage());
+
+      case '/event/create':
         return MaterialPageRoute(builder: (context) => CreateEventScreen());
+
+      case '/event/edit':
+        return MaterialPageRoute(builder: (context) => EditEventScreen());
+
+      case '/event/list/admin':
+        return MaterialPageRoute(builder: (context) => const AdminEventList());
+
+      case '/event/list/user':
+        return MaterialPageRoute(builder: (context) => const EventList());
+
+      case '/event/details':
+        return MaterialPageRoute(builder: (context) => const EventDetails());
+
       default:
         return pageNotFound();
     }
@@ -55,11 +83,9 @@ class RouteGenerator {
   static MaterialPageRoute pageNotFound() {
     return MaterialPageRoute(
         builder: (context) => Scaffold(
-            appBar: AppBar(title:Text("Error"), centerTitle: true),
-            body: Center(
+            appBar: AppBar(title: const Text("Error"), centerTitle: true),
+            body: const Center(
               child: Text("Page not found"),
-            )
-        )
-    );
+            )));
   }
 }
