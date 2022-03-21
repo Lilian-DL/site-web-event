@@ -78,18 +78,17 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 // color : Colors.green,
                 child: SlideBar()),
             Expanded(
-                flex: 1, 
-            child :Container(
-              alignment: const FractionalOffset(0.3, 0.4),
-              // color : Colors.purple,
-              height: MediaQuery.of(context).size.height * 1.0,
-              // child: Padding(
+              flex: 1,
+              child: Container(
+                alignment: const FractionalOffset(0.3, 0.4),
+                // color : Colors.purple,
+                height: MediaQuery.of(context).size.height * 1.0,
+                // child: Padding(
                 // padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                child : _body(size, context),
+                child: _body(size, context),
                 // ),
-                ),
               ),
-            // ),
+            ),
           ],
         ),
       ),

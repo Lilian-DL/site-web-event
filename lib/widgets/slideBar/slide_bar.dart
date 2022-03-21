@@ -1,10 +1,12 @@
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 import 'package:flutter/material.dart';
+import 'package:web_plan/services/auth.dart';
 import 'package:web_plan/widgets/routes/adminCreateEvent/admin_create_event.dart';
 import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
 import 'package:web_plan/widgets/routes/adminModifyEvent/admin_modify_event.dart';
 import 'package:web_plan/widgets/routes/eventDetails/event_details.dart';
 import 'package:web_plan/widgets/routes/eventList/event_list.dart';
+import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
 
 class SlideBar extends StatefulWidget {
@@ -15,6 +17,7 @@ class SlideBar extends StatefulWidget {
 }
 
 class _SlideBarState extends State<SlideBar> {
+  final AuthService auth = AuthService();
   final formKey = GlobalKey<FormState>();
 
   late List<CollapsibleItem> _items;
@@ -41,16 +44,6 @@ class _SlideBarState extends State<SlideBar> {
           );
         },
         isSelected: true,
-      ),
-      CollapsibleItem(
-        text: '(A) Édition événement',
-        icon: Icons.notifications,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => EditEventScreen()),
-          );
-        },
       ),
       CollapsibleItem(
         text: '(A) Création événement',
@@ -82,28 +75,28 @@ class _SlideBarState extends State<SlideBar> {
           );
         },
       ),
-      
-      CollapsibleItem(
-        text: 'Détails événement',
-        icon: Icons.email,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => EventDetails()),
-          );
-        },
-      ),
+
       // CollapsibleItem(
       //   text: 'Face',
       //   icon: Icons.face,
       //   onPressed: () => setState(() => _headline = 'Face'),
       // ),
-      
+
       CollapsibleItem(
-         
         text: 'Deconexion',
         icon: Icons.face,
-        onPressed: () => setState(() => _headline = 'Face'),
+        onPressed: () {
+          auth.signOut();
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ChoiceLogin(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        },
       ),
     ];
   }
@@ -156,21 +149,23 @@ class _SlideBarState extends State<SlideBar> {
       //       content: Text('Yay! Flutter Collapsible Sidebar!')));
       // },
       body: const Center(child: Center()),
-      toggleTitle : 'Close',
+      toggleTitle: 'Close',
       backgroundColor: Colors.white,
       selectedTextColor: Colors.white,
-      selectedIconBox: const Color.fromRGBO(30,64,175,1),
+      selectedIconBox: const Color.fromRGBO(30, 64, 175, 1),
       selectedIconColor: const Color(0xffF3F7F7),
       unselectedIconColor: const Color(0xff2B3138),
       unselectedTextColor: const Color(0xff2B3138),
 
-      sidebarBoxShadow : const [BoxShadow(
-      color: Colors.black,
-      blurRadius: 20,
-      spreadRadius: 0.01,
-      offset: Offset(3, 3),
-    ),],
-    
+      sidebarBoxShadow: const [
+        BoxShadow(
+          color: Colors.black,
+          blurRadius: 20,
+          spreadRadius: 0.01,
+          offset: Offset(3, 3),
+        ),
+      ],
+
       textStyle: const TextStyle(
         fontSize: 15,
         fontStyle: FontStyle.italic,
