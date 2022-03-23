@@ -46,8 +46,18 @@ class _SlideBarState extends State<SlideBar> {
         isSelected: true,
       ),
       CollapsibleItem(
+        text: 'Mes participations',
+        icon: Icons.event,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EventList()),
+          );
+        },
+      ),
+      CollapsibleItem(
         text: '(A) Création événement',
-        icon: Icons.settings,
+        icon: Icons.create,
         onPressed: () {
           Navigator.push(
             context,
@@ -57,7 +67,7 @@ class _SlideBarState extends State<SlideBar> {
       ),
       CollapsibleItem(
         text: '(A) Liste événement',
-        icon: Icons.event,
+        icon: Icons.manage_search ,
         onPressed: () {
           Navigator.push(
             context,
@@ -67,7 +77,7 @@ class _SlideBarState extends State<SlideBar> {
       ),
       CollapsibleItem(
         text: 'Mon Profil',
-        icon: Icons.home,
+        icon: Icons.face,
         onPressed: () {
           Navigator.push(
             context,
@@ -84,7 +94,7 @@ class _SlideBarState extends State<SlideBar> {
 
       CollapsibleItem(
         text: 'Deconexion',
-        icon: Icons.face,
+        icon: Icons.exit_to_app,
         onPressed: () {
           auth.signOut();
           Navigator.pushAndRemoveUntil(
@@ -137,7 +147,7 @@ class _SlideBarState extends State<SlideBar> {
       isCollapsed: false,
       items: _items,
       avatarImg: _avatarImg,
-      title: 'Dashboard',
+      title: 'Navigation',
       onTitleTap: () {
         Navigator.push(
           context,
@@ -149,7 +159,7 @@ class _SlideBarState extends State<SlideBar> {
       //       content: Text('Yay! Flutter Collapsible Sidebar!')));
       // },
       body: const Center(child: Center()),
-      toggleTitle: 'Close',
+      toggleTitle: 'Fermer',
       backgroundColor: Colors.white,
       selectedTextColor: Colors.white,
       selectedIconBox: const Color.fromRGBO(30, 64, 175, 1),
