@@ -5,7 +5,11 @@ import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:web_plan/widgets/slideBar/slide_Bar.dart';
 
 class EditEventScreen extends StatefulWidget {
-  EditEventScreen({Key? key}) : super(key: key);
+  final String id;
+  const EditEventScreen({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
 
   @override
   State<EditEventScreen> createState() => _EditEventScreenState();
