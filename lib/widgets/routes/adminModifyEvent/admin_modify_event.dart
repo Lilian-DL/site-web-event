@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:web_plan/widgets/slideBar/slide_Bar.dart';
@@ -35,15 +36,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
     super.initState();
     pickedDate = DateTime.now();
     time = TimeOfDay.now();
-  }
-
-  @override
-  void dispose() {
-    titleController.dispose();
-    detailController.dispose();
-    adressController.dispose();
-
-    super.dispose();
   }
 
   @override
@@ -91,7 +83,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                 height: MediaQuery.of(context).size.height * 1.0,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                  child: _body(size, context),
+                  child: _body(size, context, widget.id.toString()),
                 ),
               ),
             ),
@@ -101,7 +93,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
     );
   }
 
-  Widget _body(Size size, BuildContext context) {
+  Widget _body(Size size, BuildContext context, String id) {
     return Container(
         constraints: const BoxConstraints(
           minHeight: 500.0,
@@ -138,12 +130,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter a title';
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 Padding(
@@ -159,12 +145,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     keyboardType: TextInputType.multiline,
                     minLines: 5,
                     maxLines: 10,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter a detail';
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 Padding(
@@ -177,12 +157,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter a adress ';
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 Padding(
@@ -199,9 +173,9 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () async {
-                    print(await controller1
-                        .pickFiles(mime: ['image/jpeg', 'image/png']));
+                  onPressed: () /*async*/ {
+                    /*print(await controller1
+                        .pickFiles(mime: ['image/jpeg', 'image/png']));*/
                   },
                   child: const Text('Pick file'),
                 ),
@@ -234,20 +208,32 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter a max people on this event ';
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 SizedBox(height: 20.0),
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        // Recipe recipe = Recipe(titleController.value.text, detailController.value.text, adressController.value.text,);
+                      if (titleController.text.isNotEmpty &&
+                          detailController.text.isNotEmpty &&
+                          adressController.text.isNotEmpty &&
+                          peopleController.text.isNotEmpty) {
+                        var people = int.parse(peopleController.text);
+                        updateEvent(
+                            id,
+                            titleController.text,
+                            detailController.text,
+                            adressController.text,
+                            people,
+                            pickedDate);
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          Navigator.pushNamed(
+                            context,
+                            '/event/list/user',
+                          );
+                        });
+                      } else {
+                        print("error");
                       }
                     },
                     child: Text('Save'),
@@ -315,4 +301,21 @@ class _EditEventScreenState extends State<EditEventScreen> {
           },
         ),
       );
+}
+
+Future<void> updateEvent(id, title, description, location, peopleLimit, date) {
+  CollectionReference users = FirebaseFirestore.instance.collection('Event');
+  return users
+      .doc(id)
+      .update({
+        'Title': title,
+        'Description': description,
+        'Location': location,
+        'Date': date,
+        'Picture': "",
+        'PeopleLimit': peopleLimit,
+        'Users': FieldValue.arrayUnion([]),
+      })
+      .then((value) => print("Update Event"))
+      .catchError((error) => print("Failed to update event: $error"));
 }
