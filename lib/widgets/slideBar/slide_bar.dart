@@ -7,6 +7,7 @@ import 'package:web_plan/widgets/routes/adminModifyEvent/admin_modify_event.dart
 import 'package:web_plan/widgets/routes/eventDetails/event_details.dart';
 import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
+import 'package:web_plan/widgets/routes/participationsPage/participations_page.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
 
 class SlideBar extends StatefulWidget {
@@ -44,6 +45,16 @@ class _SlideBarState extends State<SlideBar> {
           );
         },
         isSelected: true,
+      ),
+      CollapsibleItem(
+        text: 'Mes participations',
+        icon: Icons.search,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ParticipationPage()),
+          );
+        },
       ),
       CollapsibleItem(
         text: '(A) Création événement',
