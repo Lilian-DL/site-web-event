@@ -107,39 +107,6 @@ class _EventList extends State<EventList> {
           mobileBody: MyCustomMobileContent(),
           desktopBody: MyCustomDesktopContent()),
 
-      //---------- Le footer de l'appli ----------
-      //
-      //
-      // bottomNavigationBar: BottomNavigationBar(
-      //   // backgroundColor: const Color.fromRGBO(36, 45, 165, 1),
-      //   iconSize: 30,
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.home_rounded,
-      //         // color: Colors.white,
-      //       ),
-      //       label: 'Accueil',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.check_circle,
-      //         // color: Colors.white,
-      //       ),
-      //       label: 'Mes participations',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.account_circle_rounded,
-      //         // color: Colors.white,
-      //       ),
-      //       label: 'Mon compte',
-      //     ),
-      //   ],
-      //   currentIndex: _selectedIndex,
-      //   selectedItemColor: const Color.fromARGB(255, 0, 110, 255),
-      //   onTap: _onItemTapped,
-      // ),
     );
   }
 }

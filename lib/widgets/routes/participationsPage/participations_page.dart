@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:web_plan/widgets/routes/loadingScreen/loading_screen.dart';
-import '../eventList/event_list.dart';
 import '../profilePage/profile_page.dart';
+import 'package:web_plan/responsive_layout.dart';
+import '../../slideBar/slide_Bar.dart';
 
 class ParticipationPage extends StatefulWidget {
   const ParticipationPage({Key? key}) : super(key: key);
@@ -13,34 +14,6 @@ class ParticipationPage extends StatefulWidget {
 }
 
 class _ParticipationPage extends State<ParticipationPage> {
-/*   int _selectedIndex = 1;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (index == 0) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const EventList(),
-          transitionDuration: const Duration(seconds: 0),
-        ),
-      );
-    }
-    if (index == 2) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const ProfilePage(),
-          transitionDuration: const Duration(seconds: 0),
-        ),
-      );
-    }
-  } */
-
   late String _headline;
   AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
 
@@ -56,6 +29,64 @@ class _ParticipationPage extends State<ParticipationPage> {
         .collection('User')
         .doc(result!.uid)
         .collection('MyEvent');
+    var size = MediaQuery.of(context).size;
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(36, 45, 165, 1),
+        elevation: 0.0,
+        title: const Text(
+          'Participations :',
+          style: TextStyle(
+              fontSize: 35,
+              fontFamily: 'Roboto',
+              color: Colors.white,
+              fontWeight: FontWeight.w900),
+        ),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromRGBO(36, 45, 165, 1),
+                Color.fromRGBO(39, 50, 207, 1),
+                Color.fromRGBO(13, 19, 102, 1)
+              ]),
+        ),
+        child: Row(
+          children: <Widget>[
+            Container(
+                constraints: const BoxConstraints(
+                  maxWidth: double.infinity,
+                  minWidth: 100,
+                ),
+                // color : Colors.green,
+                child: SlideBar()),
+            Expanded(
+              flex: 1,
+              child: Container(
+                alignment: const FractionalOffset(0.3, 0.4),
+                // color : Colors.purple,
+                height: MediaQuery.of(context).size.height * 1.0,
+                // child: Padding(
+                // padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                child: _body(size, context),
+                // ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _body(Size size, BuildContext context) {
+    User? result = FirebaseAuth.instance.currentUser;
+    final CollectionReference _events = FirebaseFirestore.instance
+        .collection('User')
+        .doc(result!.uid)
+        .collection('MyEvent');
 
     return StreamBuilder(
         stream: _events.snapshots(),
@@ -66,76 +97,20 @@ class _ParticipationPage extends State<ParticipationPage> {
 
           if (Streamsnapshot.hasData) {
             return Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [
-                      0.2,
-                      0.6,
-                      0.8,
-                    ],
-                    colors: <Color>[
-                      Color.fromRGBO(36, 45, 165, 1.0),
-                      Color.fromRGBO(39, 50, 185, 1.0),
-                      Color.fromRGBO(13, 19, 132, 1.0)
-                    ]),
+              constraints: const BoxConstraints(
+                minHeight: 500.0,
+                minWidth: 500.0,
+                maxHeight: 800.0,
+                maxWidth: 10000,
               ),
-              child: Scaffold(
-                backgroundColor: Colors.transparent,
-                appBar: AppBar(
-                  backgroundColor: const Color.fromRGBO(36, 45, 165, 1),
-                  elevation: 0.0,
-                  title: const Text(
-                    'Participations :',
-                    style: TextStyle(
-                        fontSize: 35,
-                        fontFamily: 'Roboto',
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900),
-                  ),
-                ),
-                body: ListView.builder(
-                    itemCount: Streamsnapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      return MyEventParticipation(
-                        idEventParticipation:
-                            Streamsnapshot.data!.docs[index].id.toString(),
-                      );
-                    }),
-
-                //---------- Le footer de l'appli ----------
-                //
-                //
-                /* bottomNavigationBar: BottomNavigationBar(
-                  elevation: 2.0,
-                  unselectedItemColor: const Color.fromARGB(255, 43, 42, 42),
-                  backgroundColor: Colors.white,
-                  items: const <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.home,
-                      ),
-                      label: 'Accueil',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.check_circle,
-                      ),
-                      label: 'Mes participations',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.account_circle_rounded,
-                      ),
-                      label: 'Mon compte',
-                    ),
-                  ],
-                  currentIndex: _selectedIndex,
-                  selectedItemColor: const Color.fromRGBO(13, 19, 132, 1.0),
-                  onTap: _onItemTapped,
-                ), */
-              ),
+              child: ListView.builder(
+                  itemCount: Streamsnapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    return MyCustomDesktopContent(
+                      idEventParticipation:
+                          Streamsnapshot.data!.docs[index].id.toString(),
+                    );
+                  }),
             );
           }
           return const LoadingScreen();
@@ -143,9 +118,10 @@ class _ParticipationPage extends State<ParticipationPage> {
   }
 }
 
-class MyEventParticipation extends StatelessWidget {
+class MyCustomDesktopContent extends StatelessWidget {
   String? idEventParticipation;
-  MyEventParticipation({Key? key, this.idEventParticipation}) : super(key: key);
+  MyCustomDesktopContent({Key? key, this.idEventParticipation})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
