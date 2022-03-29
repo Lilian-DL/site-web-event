@@ -408,23 +408,6 @@ class MyCustomMobileContent extends StatelessWidget {
                                               myEvent(
                                                   idEvent: documentSnapshot.id
                                                       .toString()),
-                                              // TextButton.icon(
-                                              //   onPressed: () {},
-                                              //   icon: const Icon(
-                                              //       Icons.check_circle),
-                                              //   label: const Text("S'inscrire"),
-                                              //   style: ButtonStyle(
-                                              //     backgroundColor:
-                                              //         MaterialStateProperty.all<
-                                              //             Color>(
-                                              //       const Color.fromRGBO(
-                                              //           3, 110, 20, 1),
-                                              //     ),
-                                              //     foregroundColor:
-                                              //         MaterialStateProperty.all<
-                                              //             Color>(Colors.white),
-                                              //   ),
-                                              // ),
                                             ],
                                           )
                                         ],
