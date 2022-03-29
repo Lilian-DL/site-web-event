@@ -106,9 +106,15 @@ class _ParticipationPage extends State<ParticipationPage> {
               child: ListView.builder(
                   itemCount: Streamsnapshot.data!.docs.length,
                   itemBuilder: (context, index) {
-                    return MyCustomDesktopContent(
-                      idEventParticipation:
-                          Streamsnapshot.data!.docs[index].id.toString(),
+                    return ResponsiveLayout(
+                      mobileBody: MyCustomMobileContent(
+                        idEventParticipation:
+                            Streamsnapshot.data!.docs[index].id.toString(),
+                      ),
+                      desktopBody: MyCustomDesktopContent(
+                        idEventParticipation:
+                            Streamsnapshot.data!.docs[index].id.toString(),
+                      ),
                     );
                   }),
             );
@@ -118,9 +124,9 @@ class _ParticipationPage extends State<ParticipationPage> {
   }
 }
 
-class MyCustomDesktopContent extends StatelessWidget {
+class MyCustomMobileContent extends StatelessWidget {
   String? idEventParticipation;
-  MyCustomDesktopContent({Key? key, this.idEventParticipation})
+  MyCustomMobileContent({Key? key, this.idEventParticipation})
       : super(key: key);
 
   @override
@@ -140,7 +146,7 @@ class MyCustomDesktopContent extends StatelessWidget {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
             return Container(
-              height: 252,
+              height: 360,
               margin:
                   const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 20),
               padding: const EdgeInsets.only(
@@ -181,7 +187,6 @@ class MyCustomDesktopContent extends StatelessWidget {
                     // ---------- Container des informations de l'event ----------
                     //
                     Container(
-                      width: 400,
                       padding: const EdgeInsets.all(10),
                       decoration: const BoxDecoration(
                         color: Colors.white,
@@ -191,7 +196,7 @@ class MyCustomDesktopContent extends StatelessWidget {
                         ),
                       ),
                       child: Column(
-                        children: <Widget>[
+                        children: [
                           Row(children: [
                             const Icon(Icons.calendar_today),
                             Text(
@@ -221,6 +226,8 @@ class MyCustomDesktopContent extends StatelessWidget {
                           ),
                           Container(
                             padding: const EdgeInsets.all(10),
+                            width: MediaQuery.of(context).size.width * 0.40,
+                            height: MediaQuery.of(context).size.height * 0.20,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.grey[200],
@@ -263,6 +270,184 @@ class MyCustomDesktopContent extends StatelessWidget {
                               myEvent(idEvent: idEventParticipation.toString()),
                             ],
                           )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ]),
+            );
+          }
+          return const Text("");
+        });
+  }
+}
+
+class MyCustomDesktopContent extends StatelessWidget {
+  String? idEventParticipation;
+  MyCustomDesktopContent({Key? key, this.idEventParticipation})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference _event = FirebaseFirestore.instance.collection('Event');
+    return FutureBuilder<DocumentSnapshot>(
+        future: _event.doc(idEventParticipation).get(),
+        builder: (context, snapshot) {
+          print("1" + snapshot.toString());
+          if (snapshot.hasError) {
+            return const Text("Something went wrong");
+          }
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return const Text("Document does not exist");
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            return Container(
+              height: 360,
+              margin:
+                  const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 20),
+              padding: const EdgeInsets.only(
+                top: 8,
+                bottom: 2,
+              ),
+              decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromARGB(255, 42, 42, 43),
+                      blurRadius: 4,
+                      offset: Offset(4, 8),
+                    )
+                  ]),
+              child: Column(children: [
+                Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.perm_contact_calendar_outlined,
+                          color: Color.fromARGB(255, 39, 39, 39),
+                        ),
+                        Text(
+                          "${data['Title']}",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                            color: Color.fromARGB(255, 39, 39, 39),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    // ---------- Container des informations de l'event ----------
+                    //
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Column(
+                            children: [
+                              Container(
+                                width: 450,
+                                height: 300,
+                                decoration: BoxDecoration(color: Colors.black),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.15,
+                          ),
+                          Column(
+                            children: [
+                              Row(children: [
+                                const Icon(Icons.calendar_today),
+                                Text(
+                                  " ${data['Date'].toDate().toString().split(" ")[0]}",
+                                  style: const TextStyle(fontSize: 16),
+                                )
+                              ]),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(Icons.people_alt),
+                                  Text(
+                                      " ${data['Users'].length}/${data['PeopleLimit']}",
+                                      style: const TextStyle(fontSize: 16)),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  const Icon(Icons.place),
+                                  Text("${data['Location']}",
+                                      style: const TextStyle(fontSize: 16)),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                width: MediaQuery.of(context).size.width * 0.20,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.10,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.grey[200],
+                                ),
+                                child: Text(
+                                  "${data['Description']}",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextButton.icon(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/details',
+                                        arguments:
+                                            idEventParticipation.toString(),
+                                      );
+                                    },
+                                    icon: const Icon(Icons.more),
+                                    label: const Text("Plus d'infos"),
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                        const Color.fromRGBO(140, 140, 140, 1),
+                                      ),
+                                      foregroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  myEvent(
+                                      idEvent: idEventParticipation.toString()),
+                                ],
+                              )
+                            ],
+                          ),
                         ],
                       ),
                     )
