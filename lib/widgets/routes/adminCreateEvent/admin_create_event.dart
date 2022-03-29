@@ -33,15 +33,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
   @override
-  void dispose() {
-    titleController.dispose();
-    detailController.dispose();
-    adressController.dispose();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
@@ -175,9 +166,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () async {
-                    print(await controller1
-                        .pickFiles(mime: ['image/jpeg', 'image/png']));
+                  onPressed: () /*async */ {
+                    /*print(await controller1
+                        .pickFiles(mime: ['image/jpeg', 'image/png']));*/
                   },
                   child: const Text('Pick file'),
                 ),
@@ -189,12 +180,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       ListTile(
                         title: Text(
                             "Date :  ${pickedDate.day}, ${pickedDate.month}, ${pickedDate.year}"),
-                        trailing: Icon(Icons.keyboard_arrow_down),
+                        trailing: const Icon(Icons.keyboard_arrow_down),
                         onTap: _pickDate,
                       ),
                       ListTile(
                         title: Text("Hour :  ${time.hour}:${time.minute}"),
-                        trailing: Icon(Icons.keyboard_arrow_down),
+                        trailing: const Icon(Icons.keyboard_arrow_down),
                         onTap: _pickTime,
                       ),
                     ],
@@ -220,12 +211,15 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           detailController.text.isNotEmpty &&
                           adressController.text.isNotEmpty &&
                           peopleController.text.isNotEmpty) {
-                        addEvent(
-                            titleController.text,
-                            detailController.text,
-                            adressController.text,
-                            peopleController.text,
-                            pickedDate);
+                        var people = int.parse(peopleController.text);
+                        addEvent(titleController.text, detailController.text,
+                            adressController.text, people, pickedDate);
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          Navigator.pushNamed(
+                            context,
+                            '/event/list/user',
+                          );
+                        });
                       } else {
                         print("error");
                       }
@@ -308,6 +302,7 @@ Future<void> addEvent(title, description, location, peopleLimit, date) {
         'Date': date,
         'Picture': "",
         'PeopleLimit': peopleLimit,
+        'Users': FieldValue.arrayUnion([]),
       })
       .then((value) => print("User Event"))
       .catchError((error) => print("Failed to add event: $error"));
