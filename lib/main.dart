@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    final args = settings.arguments;
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (context) => IntroScreen());
@@ -64,7 +65,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => CreateEventScreen());
 
       case '/event/edit':
-        return MaterialPageRoute(builder: (context) => EditEventScreen());
+        return MaterialPageRoute(
+            builder: (context) => EditEventScreen(id: args.toString()));
 
       case '/event/list/admin':
         return MaterialPageRoute(builder: (context) => const AdminEventList());
@@ -73,7 +75,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => const EventList());
 
       case '/event/details':
-        return MaterialPageRoute(builder: (context) => const EventDetails());
+        return MaterialPageRoute(
+            builder: (context) => EventDetails(id: args.toString()));
 
       default:
         return pageNotFound();
