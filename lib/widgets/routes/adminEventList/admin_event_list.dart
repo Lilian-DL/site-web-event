@@ -302,7 +302,6 @@ class MyCustomMobileContent extends StatelessWidget {
                                             children: [
                                               TextButton.icon(
                                                 onPressed: () {
-                                                  print(documentSnapshot.id);
                                                   Navigator.pushNamed(
                                                     context,
                                                     '/event/edit',
@@ -328,7 +327,22 @@ class MyCustomMobileContent extends StatelessWidget {
                                                 width: 20,
                                               ),
                                               TextButton.icon(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  /*
+                                                  deleteUserEvent(
+                                                      documentSnapshot.id);
+                                                  deleteEvent(
+                                                      documentSnapshot.id);
+                                                  Future.delayed(
+                                                      const Duration(
+                                                          milliseconds: 500),
+                                                      () {
+                                                    Navigator.pushNamed(
+                                                      context,
+                                                      '/event/list/admin',
+                                                    );
+                                                  });*/
+                                                },
                                                 icon: const Icon(Icons
                                                     .remove_circle_outline),
                                                 label: const Text("Supprimer"),
@@ -543,7 +557,6 @@ class MyCustomDesktopContent extends StatelessWidget {
                                             children: [
                                               TextButton.icon(
                                                 onPressed: () {
-                                                  print(documentSnapshot.id);
                                                   Navigator.pushNamed(
                                                     context,
                                                     '/event/edit',
@@ -569,7 +582,22 @@ class MyCustomDesktopContent extends StatelessWidget {
                                                 width: 20,
                                               ),
                                               TextButton.icon(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  /*
+                                                  deleteUserEvent(
+                                                      documentSnapshot.id);
+                                                  deleteEvent(
+                                                      documentSnapshot.id);
+                                                  Future.delayed(
+                                                      const Duration(
+                                                          milliseconds: 500),
+                                                      () {
+                                                    Navigator.pushNamed(
+                                                      context,
+                                                      '/event/list/admin',
+                                                    );
+                                                  });*/
+                                                },
                                                 icon: const Icon(Icons
                                                     .remove_circle_outline),
                                                 label: const Text("Supprimer"),
@@ -606,15 +634,34 @@ class MyCustomDesktopContent extends StatelessWidget {
   }
 }
 
-Future<void> deleteEvent(idEvent) {
-  User? result = FirebaseAuth.instance.currentUser;
-  CollectionReference users = FirebaseFirestore.instance
-      .collection('Event')
-      .doc(result!.uid)
-      .collection('MyEvent');
+Future<void> deleteUserEvent(idEvent) async {
+  final users = await FirebaseFirestore.instance.collection('User').get();
+  users.docs.forEach((doc) {
+    final user = doc.data()['MyEvent'];
+    for (var u in user) {
+      if (u.toString() == idEvent.toString()) {
+        deleteEventUser(doc.id.toString(), idEvent.toString());
+      }
+    }
+  });
+}
+
+Future<void> deleteEventUser(idUser, idEvent) async {
+  CollectionReference users = FirebaseFirestore.instance.collection('User');
   return users
-      .doc(idEvent)
+      .doc(idUser)
+      .update({
+        'MyEvent': FieldValue.arrayRemove([idEvent])
+      })
+      .then((value) => print("User remove event test"))
+      .catchError((error) => print("Failed to remove event: $error"));
+}
+
+Future<void> deleteEvent(id) {
+  CollectionReference users = FirebaseFirestore.instance.collection('Event');
+  return users
+      .doc(id)
       .delete()
-      .then((value) => print("IdEvent delete"))
-      .catchError((error) => print("Failed to delete : $error"));
+      .then((value) => print("delete Event"))
+      .catchError((error) => print("Failed to delete event: $error"));
 }

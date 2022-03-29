@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:web_plan/services/auth.dart';
-import 'package:web_plan/widgets/routes/eventList/event_list.dart';
+import 'package:web_plan/widgets/routes/introScreen/intro_screen.dart';
 
 int itemCount = 5;
 List<bool> selected = <bool>[];
@@ -164,7 +164,7 @@ class _Login extends State<Login> {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                      const EventList(),
+                                      IntroScreen(),
                               transitionDuration: const Duration(seconds: 0),
                             ),
                           );
