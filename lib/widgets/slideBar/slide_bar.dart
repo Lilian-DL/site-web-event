@@ -68,7 +68,7 @@ class _SlideBarState extends State<SlideBar> {
       ),
       CollapsibleItem(
         text: '(A) Liste événement',
-        icon: Icons.manage_search ,
+        icon: Icons.manage_search,
         onPressed: () {
           Navigator.push(
             context,
