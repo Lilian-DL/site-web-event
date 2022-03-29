@@ -466,7 +466,6 @@ class MyCustomMobileContent extends StatelessWidget {
                                               ),
                                               TextButton.icon(
                                                 onPressed: () {
-                                                  /*
                                                   deleteUserEvent(
                                                       documentSnapshot.id);
                                                   deleteEvent(
@@ -479,7 +478,7 @@ class MyCustomMobileContent extends StatelessWidget {
                                                       context,
                                                       '/event/list/admin',
                                                     );
-                                                  });*/
+                                                  });
                                                 },
                                                 icon: const Icon(Icons
                                                     .remove_circle_outline),
@@ -721,7 +720,6 @@ class MyCustomDesktopContent extends StatelessWidget {
                                               ),
                                               TextButton.icon(
                                                 onPressed: () {
-                                                  /*
                                                   deleteUserEvent(
                                                       documentSnapshot.id);
                                                   deleteEvent(
@@ -734,7 +732,7 @@ class MyCustomDesktopContent extends StatelessWidget {
                                                       context,
                                                       '/event/list/admin',
                                                     );
-                                                  });*/
+                                                  });
                                                 },
                                                 icon: const Icon(Icons
                                                     .remove_circle_outline),
