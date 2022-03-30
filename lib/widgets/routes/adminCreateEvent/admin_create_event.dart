@@ -1,6 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
-import 'package:collapsible_sidebar/collapsible_sidebar/collapsible_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:web_plan/services/auth.dart';
@@ -9,10 +10,9 @@ import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
 import 'package:web_plan/widgets/routes/participationsPage/participations_page.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
-import 'package:web_plan/widgets/slideBar/slide_bar.dart';
 
 class CreateEventScreen extends StatefulWidget {
-  CreateEventScreen({Key? key}) : super(key: key);
+  const CreateEventScreen({Key? key}) : super(key: key);
 
   @override
   State<CreateEventScreen> createState() => _CreateEventScreenState();
@@ -34,8 +34,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   var WhitelistingTextInputFormatter;
 
   late List<CollapsibleItem> _items;
-  late String _headline;
-  AssetImage _avatarImg = const AssetImage('../assets/logoWeb.png');
+  final AssetImage _avatarImg = const AssetImage('../assets/logoWeb.png');
   final AuthService auth = AuthService();
 
   @override
@@ -44,10 +43,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     pickedDate = DateTime.now();
     time = TimeOfDay.now();
     _items = _generateItems;
-    _headline = _items.firstWhere((item) => item.isSelected).text;
   }
 
-  @override
   List<CollapsibleItem> get _generateItems {
     return [
       CollapsibleItem(
@@ -58,7 +55,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  EventList(),
+                  const EventList(),
               transitionDuration: const Duration(seconds: 0),
             ),
           );
@@ -72,7 +69,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  ParticipationPage(),
+                  const ParticipationPage(),
               transitionDuration: const Duration(seconds: 0),
             ),
           );
@@ -86,7 +83,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  CreateEventScreen(),
+                  const CreateEventScreen(),
               transitionDuration: const Duration(seconds: 0),
             ),
           );
@@ -101,7 +98,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  AdminEventList(),
+                  const AdminEventList(),
               transitionDuration: const Duration(seconds: 0),
             ),
           );
@@ -115,7 +112,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  ProfilePage(),
+                  const ProfilePage(),
               transitionDuration: const Duration(seconds: 0),
             ),
           );
@@ -420,18 +417,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       // ignore: curly_braces_in_flow_control_structures
       setState(() {
         pickedDate = date;
-      });
-  }
-
-  _pickTime() async {
-    TimeOfDay? t = await showTimePicker(
-      context: context,
-      initialTime: time,
-    );
-    if (t != null)
-      // ignore: curly_braces_in_flow_control_structures
-      setState(() {
-        time = t;
       });
   }
 
