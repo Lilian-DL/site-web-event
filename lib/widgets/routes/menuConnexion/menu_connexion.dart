@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'download_button.dart';
 
 class ChoiceLogin extends StatefulWidget {
   const ChoiceLogin({Key? key}) : super(key: key);
@@ -37,8 +38,8 @@ class _ChoiceLogin extends State<ChoiceLogin> {
             borderRadius: BorderRadius.circular(25),
           ),
           child: SizedBox(
-            width: 300,
-            height: 450,
+            width: 400,
+            height: 500,
             child: Column(
               children: [
                 const Padding(
@@ -52,8 +53,8 @@ class _ChoiceLogin extends State<ChoiceLogin> {
                 Column(
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.12,
-                      width: MediaQuery.of(context).size.width * 0.15,
+                      height:75,
+                      width: 200,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextButton(
@@ -78,8 +79,8 @@ class _ChoiceLogin extends State<ChoiceLogin> {
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.12,
-                      width: MediaQuery.of(context).size.width * 0.15,
+                      height: 75,
+                      width: 200,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextButton(
@@ -99,7 +100,10 @@ class _ChoiceLogin extends State<ChoiceLogin> {
                           ),
                         ),
                       ),
-                    )
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.10),
+                   const DownloadButton(url: "https://firebasestorage.googleapis.com/v0/b/planification-8efe7.appspot.com/o/apk_mobile%2Fapp-release.apk?alt=media&token=00fbacae-0f97-4350-9601-f07dc8d44bc0"),
+
                   ],
                 ),
               ],
