@@ -9,7 +9,7 @@ import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
 import 'package:web_plan/widgets/routes/participationsPage/participations_page.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
-import 'package:intl/intl.dart';
+import 'package:web_plan/widgets/slideBar/slide_bar.dart';
 
 class EventDetails extends StatefulWidget {
   final String id;
@@ -124,6 +124,7 @@ class _EventDetailsState extends State<EventDetails> {
             ),
           );
         },
+        isSelected: true,
       ),
       CollapsibleItem(
         text: '(A) Liste événement',
@@ -354,9 +355,6 @@ Widget _body(Size size, BuildContext context, String id) {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
-          DateTime date = (data['Date'].toDate());
-          var format = DateFormat('dd/MM/yyyy');
-          var goodDate = format.format(date);
           return Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -410,18 +408,22 @@ Widget _body(Size size, BuildContext context, String id) {
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    ClipRRect(
+                                    /*ClipRRect(
                                       borderRadius: BorderRadius.circular(5),
-                                      child: Image.network(
-                                        'https://media.discordapp.net/attachments/902535167850197022/935814927443165254/unknown.png',
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.60,
+                                      child: AssetImage('illustration.png'),
+                                    ),*/
+                                    Container(
                                         height:
-                                            MediaQuery.of(context).size.width *
-                                                0.50,
-                                      ),
-                                    ),
+                                            MediaQuery.of(context).size.height *
+                                                0.40,
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.40,
+                                        decoration: const BoxDecoration(
+                                            image: DecorationImage(
+                                          image: AssetImage("illustration.png"),
+                                          fit: BoxFit.fill,
+                                        ))),
 
                                     // SizedBox(width: MediaQuery.of(context).size.width * 0.10),
 
@@ -467,7 +469,9 @@ Widget _body(Size size, BuildContext context, String id) {
                                       child: Row(
                                         children: [
                                           const Icon(Icons.calendar_today),
-                                          Text(goodDate)
+                                          Text(
+                                              ' ${data['Date'].toDate().toString().split(" ")[0]} '
+                                              '${data['Date'].toDate().toString().split(" ")[1].substring(0, 5)}'),
                                         ],
                                       ),
                                     ),
