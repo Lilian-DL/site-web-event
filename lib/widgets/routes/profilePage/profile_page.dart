@@ -410,8 +410,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       // ---------- Nombre de participations ---------- //
                       Card(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 8.0),
+                        color: const Color.fromARGB(31, 236, 236, 236),
+                        margin: const EdgeInsets.only(left: 50.0, right: 50.0),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
@@ -423,9 +423,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Text(
                                       "Ceci est une description de ma personne",
                                       style: TextStyle(
-                                          color: Color.fromRGBO(36, 45, 165, 1),
-                                          fontSize: 22.0,
-                                          fontWeight: FontWeight.w600),
+                                          color: Colors.black54,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     SizedBox(
                                       height: 7,
