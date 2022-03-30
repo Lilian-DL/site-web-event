@@ -55,58 +55,75 @@ class _EditEventScreenState extends State<EditEventScreen> {
   @override
   List<CollapsibleItem> get _generateItems {
     return [
-      CollapsibleItem(
+            CollapsibleItem(
         text: 'Liste des events',
         icon: Icons.search,
         onPressed: () {
-          setState(() => _headline);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => EventList()),
-          );
+          Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                   EventList(),
+                transitionDuration: const Duration(seconds: 0),
+              ),
+            );
         },
       ),
       CollapsibleItem(
         text: 'Mes participations',
         icon: Icons.event,
         onPressed: () {
-          setState(() => _headline);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ParticipationPage()),
-          );
+          Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                   ParticipationPage(),
+                transitionDuration: const Duration(seconds: 0),
+              ),
+            );
         },
       ),
       CollapsibleItem(
         text: '(A) Création événement',
         icon: Icons.create,
         onPressed: () {
-          setState(() => _headline = ('create Event'));
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateEventScreen()),
-          );
+          Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                   CreateEventScreen(),
+                transitionDuration: const Duration(seconds: 0),
+              ),
+            );
         },
       ),
       CollapsibleItem(
         text: '(A) Liste événement',
         icon: Icons.manage_search,
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AdminEventList()),
-          );
-        },
+          Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                   AdminEventList(),
+                transitionDuration: const Duration(seconds: 0),
+              ),
+            );
+        }, 
         isSelected: true,
       ),
       CollapsibleItem(
         text: 'Mon Profil',
         icon: Icons.face,
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ProfilePage()),
-          );
+          Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                   ProfilePage(),
+                transitionDuration: const Duration(seconds: 0),
+              ),
+            );
         },
       ),
 
