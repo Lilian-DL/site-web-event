@@ -38,54 +38,73 @@ class _SlideBarState extends State<SlideBar> {
       CollapsibleItem(
         text: 'Liste des events',
         icon: Icons.search,
-        onPressed: () {
-          Navigator.push(
+        onPressed: ()
+            {
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => EventList()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
           );
         },
         isSelected: true,
       ),
       CollapsibleItem(
-        text: 'Mes participations',
-        icon: Icons.event,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ParticipationPage()),
-          );
-        },
-      ),
+          text: 'Mes participations',
+          icon: Icons.event,
+          onPressed: ()
+              {
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const ParticipationPage(),
+                transitionDuration: const Duration(seconds: 0),
+              ),
+            );
+          }),
       CollapsibleItem(
-        text: '(A) Création événement',
-        icon: Icons.create,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateEventScreen()),
-          );
-        },
-      ),
+          text: '(A) Création événement',
+          icon: Icons.create,
+          onPressed: ()
+              {
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                   CreateEventScreen(),
+                transitionDuration: const Duration(seconds: 0),
+              ),
+            );
+          }),
       CollapsibleItem(
-        text: '(A) Liste événement',
-        icon: Icons.manage_search ,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AdminEventList()),
-          );
-        },
-      ),
+          text: '(A) Liste événement',
+          icon: Icons.manage_search,
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const AdminEventList(),
+                transitionDuration: const Duration(seconds: 0),
+              ),
+            );
+          }),
       CollapsibleItem(
-        text: 'Mon Profil',
-        icon: Icons.face,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ProfilePage()),
-          );
-        },
-      ),
+          text: 'Mon Profil',
+          icon: Icons.face,
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const ProfilePage(),
+                transitionDuration: const Duration(seconds: 0),
+              ),
+            );
+          }),
 
       // CollapsibleItem(
       //   text: 'Face',
@@ -116,49 +135,23 @@ class _SlideBarState extends State<SlideBar> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return
-        // Container(
-        // appBar: AppBar(
-        //   backgroundColor: const Color.fromRGBO(36, 45, 165, 1),
-        //   elevation: 0.0,
-        //   title: const Text(
-        //     'Edition d\'un événement :',
-        //     style: TextStyle(
-        //         fontSize: 35,
-        //         fontFamily: 'Roboto',
-        //         color: Colors.white,
-        //         fontWeight: FontWeight.w900),
-        //   ),
-        // ),
-        // child: Container(
-        //   alignment: Alignment.center,
-        //   // padding: const EdgeInsets.all(50),
-        //   decoration: const BoxDecoration(
-        //     gradient: LinearGradient(
-        //         begin: Alignment.topCenter,
-        //         end: Alignment.bottomCenter,
-        //         colors: [
-        //           Color.fromRGBO(36, 45, 165, 1),
-        //           Color.fromRGBO(39, 50, 207, 1),
-        //           Color.fromRGBO(13, 19, 102, 1)
-        //         ]),
-        //   ),
-
-        //child:
+        
         CollapsibleSidebar(
       isCollapsed: false,
       items: _items,
       avatarImg: _avatarImg,
       title: 'Navigation',
-      onTitleTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => EventList()),
-        );
+      onTitleTap: () 
+      {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
       },
-      // onTitleTap: () {
-      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      //       content: Text('Yay! Flutter Collapsible Sidebar!')));
-      // },
       body: const Center(child: Center()),
       toggleTitle: 'Fermer',
       backgroundColor: Colors.white,
@@ -187,50 +180,8 @@ class _SlideBarState extends State<SlideBar> {
           fontStyle: FontStyle.italic,
           color: Colors.black,
           fontWeight: FontWeight.bold),
-      // toggleTitleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     );
-    // ),
-    //);
+
   }
 
-  // Widget body(Size size, BuildContext context) {
-  //   return Container(
-  //     body: Container(
-  // decoration: const BoxDecoration(
-  //   gradient: LinearGradient(
-  //       begin: Alignment.topCenter,
-  //       end: Alignment.bottomCenter,
-  //       colors: [
-  //         Color.fromRGBO(36, 45, 165, 1),
-  //         Color.fromRGBO(39, 50, 207, 1),
-  //         Color.fromRGBO(13, 19, 102, 1)
-  //       ]),
-  // ),
-//         padding: const EdgeInsets.only(left: 75, right: 75, top: 0, bottom: 0),
-//         alignment: Alignment.center,
-//         // key: formKey,
-//         child: ListView(
-//           children: <Widget>[
-//             SizedBox(height: 50),
-//             Container(
-//               width: 800,
-//               height: 700,
-//               padding: const EdgeInsets.all(20),
-//               decoration: const BoxDecoration(
-//                 borderRadius: BorderRadius.all(Radius.circular(25)),
-//                 color: Colors.white,
-//                 boxShadow: [
-//                   BoxShadow(
-//                       color: Color.fromRGBO(0, 0, 0, 0.6),
-//                       spreadRadius: 5,
-//                       blurRadius: 29,
-//                       offset: Offset(0, 0))
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-  // ),
-  // );
-  // }
 }

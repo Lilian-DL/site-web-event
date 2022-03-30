@@ -1,7 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collapsible_sidebar/collapsible_sidebar.dart';
+import 'package:collapsible_sidebar/collapsible_sidebar/collapsible_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:web_plan/services/auth.dart';
+import 'package:web_plan/widgets/routes/adminCreateEvent/admin_create_event.dart';
+import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
+import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 import 'package:web_plan/widgets/routes/loadingScreen/loading_screen.dart';
+import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
+import '../profilePage/profile_page.dart';
 import 'package:web_plan/responsive_layout.dart';
 import '../../slideBar/slide_Bar.dart';
 
@@ -13,12 +21,99 @@ class ParticipationPage extends StatefulWidget {
 }
 
 class _ParticipationPage extends State<ParticipationPage> {
+  late List<CollapsibleItem> _items;
   late String _headline;
   AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
+  final AuthService auth = AuthService();
 
   @override
   void initState() {
     super.initState();
+    _items = _generateItems;
+    _headline = _items.firstWhere((item) => item.isSelected).text;
+  }
+
+  @override
+  List<CollapsibleItem> get _generateItems {
+    return [
+      CollapsibleItem(
+        text: 'Liste des events',
+        icon: Icons.search,
+        onPressed: () {
+          setState(() => _headline);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EventList()),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Mes participations',
+        icon: Icons.event,
+        onPressed: () {
+          setState(() => _headline);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ParticipationPage()),
+          );
+        },
+        isSelected: true,
+      ),
+      CollapsibleItem(
+        text: '(A) Création événement',
+        icon: Icons.create,
+        onPressed: () {
+          setState(() => _headline = ('create Event'));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateEventScreen()),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: '(A) Liste événement',
+        icon: Icons.manage_search,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AdminEventList()),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Mon Profil',
+        icon: Icons.face,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProfilePage()),
+          );
+        },
+      ),
+
+      // CollapsibleItem(
+      //   text: 'Face',
+      //   icon: Icons.face,
+      //   onPressed: () => setState(() => _headline = 'Face'),
+      // ),
+
+      CollapsibleItem(
+        text: 'Deconexion',
+        icon: Icons.exit_to_app,
+        onPressed: () {
+          auth.signOut();
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ChoiceLogin(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        },
+      ),
+    ];
   }
 
   @override
@@ -51,12 +146,57 @@ class _ParticipationPage extends State<ParticipationPage> {
         child: Row(
           children: <Widget>[
             Container(
-                constraints: const BoxConstraints(
-                  maxWidth: double.infinity,
-                  minWidth: 100,
+              constraints: const BoxConstraints(
+                maxWidth: double.infinity,
+                minWidth: 100,
+              ),
+              // color : Colors.green,
+              child: CollapsibleSidebar(
+                isCollapsed: false,
+                items: _items,
+                avatarImg: _avatarImg,
+                title: 'Navigation',
+                onTitleTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EventList()),
+                  );
+                },
+                // onTitleTap: () {
+                //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                //       content: Text('Yay! Flutter Collapsible Sidebar!')));
+                // },
+                body: const Center(child: Center()),
+                toggleTitle: 'Fermer',
+                backgroundColor: Colors.white,
+                selectedTextColor: Colors.white,
+                selectedIconBox: const Color.fromRGBO(30, 64, 175, 1),
+                selectedIconColor: const Color(0xffF3F7F7),
+                unselectedIconColor: const Color(0xff2B3138),
+                unselectedTextColor: const Color(0xff2B3138),
+
+                sidebarBoxShadow: const [
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 20,
+                    spreadRadius: 0.01,
+                    offset: Offset(3, 3),
+                  ),
+                ],
+
+                textStyle: const TextStyle(
+                  fontSize: 15,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.black,
                 ),
-                // color : Colors.green,
-                child: SlideBar()),
+                titleStyle: const TextStyle(
+                    fontSize: 20,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+                // toggleTitleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
             Expanded(
               flex: 1,
               child: Container(
@@ -77,19 +217,19 @@ class _ParticipationPage extends State<ParticipationPage> {
 
   Widget _body(Size size, BuildContext context) {
     User? result = FirebaseAuth.instance.currentUser;
-    final CollectionReference _events = FirebaseFirestore.instance
-        .collection('User')
-        .doc(result!.uid)
-        .collection('MyEvent');
+    final CollectionReference _events =
+        FirebaseFirestore.instance.collection('User');
 
     return StreamBuilder(
-        stream: _events.snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> Streamsnapshot) {
+        stream: _events.doc(result!.uid).snapshots(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot> Streamsnapshot) {
           if (Streamsnapshot.hasError) {
             return const Text('Something went wrong');
           }
 
           if (Streamsnapshot.hasData) {
+            Map<String, dynamic> data =
+                Streamsnapshot.data!.data() as Map<String, dynamic>;
             return Container(
               constraints: const BoxConstraints(
                 minHeight: 500.0,
@@ -98,16 +238,16 @@ class _ParticipationPage extends State<ParticipationPage> {
                 maxWidth: 10000,
               ),
               child: ListView.builder(
-                  itemCount: Streamsnapshot.data!.docs.length,
+                  itemCount: data['MyEvent'].length,
                   itemBuilder: (context, index) {
                     return ResponsiveLayout(
                         mobileBody: MyCustomMobileContent(
                           idEventParticipation:
-                              Streamsnapshot.data!.docs[index].id.toString(),
+                              data['MyEvent'][index].toString(),
                         ),
                         desktopBody: MyCustomDesktopContent(
                           idEventParticipation:
-                              Streamsnapshot.data!.docs[index].id.toString(),
+                              data['MyEvent'][index].toString(),
                         ));
                   }),
             );
@@ -249,7 +389,7 @@ class MyCustomMobileContent extends StatelessWidget {
                                       onPressed: () {
                                         Navigator.pushNamed(
                                           context,
-                                          '/details',
+                                          '/event/details',
                                           arguments:
                                               idEventParticipation.toString(),
                                         );
@@ -524,10 +664,7 @@ class _myEventState extends State<myEvent> {
   @override
   Widget build(BuildContext context) {
     User? result = FirebaseAuth.instance.currentUser;
-    CollectionReference userRef = FirebaseFirestore.instance
-        .collection('User')
-        .doc(result!.uid)
-        .collection('MyEvent');
+    CollectionReference userRef = FirebaseFirestore.instance.collection('User');
 
     Text dialog = const Text('');
     Text unsubDialog = const Text('Désinscription');
@@ -554,12 +691,24 @@ class _myEventState extends State<myEvent> {
     var unsubButtonColor = MaterialStateProperty.all<Color>(
         const Color.fromARGB(255, 233, 17, 17));
 
+    bool contains(data, idEvent) {
+      bool boolean = false;
+      for (var d in data) {
+        if (d == idEvent) {
+          boolean = true;
+        }
+      }
+      return boolean;
+    }
+
     return FutureBuilder(
-        future: userRef.doc(widget.idEvent.toString()).get(),
+        future: userRef.doc(result!.uid).get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data!.exists) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            if (contains(data['MyEvent'], widget.idEvent)) {
               dialog = unsubDialog;
               question = unsubQuestion;
               buttonText = unsubButtonText;
@@ -647,14 +796,11 @@ class _myEventState extends State<myEvent> {
 
 Future<void> addEvent(idEvent) {
   User? result = FirebaseAuth.instance.currentUser;
-  CollectionReference users = FirebaseFirestore.instance
-      .collection('User')
-      .doc(result!.uid)
-      .collection('MyEvent');
+  CollectionReference users = FirebaseFirestore.instance.collection('User');
   return users
-      .doc(idEvent)
-      .set({
-        'idEvent': idEvent,
+      .doc(result!.uid)
+      .update({
+        'MyEvent': FieldValue.arrayUnion([idEvent]),
       })
       .then((value) => print("IdEvent Added"))
       .catchError((error) => print("Failed to add : $error"));
@@ -675,13 +821,12 @@ Future<void> addCountEvent(idEvent) {
 
 Future<void> deleteEvent(idEvent) {
   User? result = FirebaseAuth.instance.currentUser;
-  CollectionReference users = FirebaseFirestore.instance
-      .collection('User')
-      .doc(result!.uid)
-      .collection('MyEvent');
+  CollectionReference users = FirebaseFirestore.instance.collection('User');
   return users
-      .doc(idEvent)
-      .delete()
+      .doc(result!.uid)
+      .update({
+        'MyEvent': FieldValue.arrayRemove([idEvent])
+      })
       .then((value) => print("IdEvent delete"))
       .catchError((error) => print("Failed to delete : $error"));
 }
