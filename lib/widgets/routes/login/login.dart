@@ -155,7 +155,7 @@ class _Login extends State<Login> {
                     onPressed: () async {
                       auth.signInWithEmailAndPassword(
                           myControllerEmail.text, myControllerPassWord.text);
-                      await Future.delayed(new Duration(milliseconds: 1000),
+                      await Future.delayed(new Duration(milliseconds: 1300),
                           () {
                         User? _user = FirebaseAuth.instance.currentUser;
                         if (_user != null) {

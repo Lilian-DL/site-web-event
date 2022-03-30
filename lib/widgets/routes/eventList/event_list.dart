@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
-import 'package:collapsible_sidebar/collapsible_sidebar/collapsible_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:web_plan/responsive_layout.dart';
@@ -10,6 +9,7 @@ import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
 import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
 import 'package:web_plan/widgets/routes/participationsPage/participations_page.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
+import 'package:intl/intl.dart';
 
 class EventList extends StatefulWidget {
   const EventList({Key? key}) : super(key: key);
@@ -27,8 +27,38 @@ class _EventList extends State<EventList> {
   @override
   void initState() {
     super.initState();
-    _items = _generateItems;
+    _items = _generateUserItems;
+    CheckItem();
     _headline = _items.firstWhere((item) => item.isSelected).text;
+  }
+
+  Future CheckItem() async {
+    bool boolean = await checkItemBool();
+    if (boolean == true) {
+      setState(() {
+        _items = _generateItems;
+      });
+    } else {
+      setState(() {
+        _items = _generateUserItems;
+      });
+    }
+  }
+
+  Future<bool> checkItemBool() async {
+    User? result = FirebaseAuth.instance.currentUser;
+    bool boolean = await FirebaseFirestore.instance
+        .collection('User')
+        .doc(result!.uid)
+        .get()
+        .then((value) {
+      if (value['Admin'] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return boolean;
   }
 
   @override
@@ -38,10 +68,13 @@ class _EventList extends State<EventList> {
         text: 'Liste des events',
         icon: Icons.search,
         onPressed: () {
-          setState(() => _headline);
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => EventList()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
           );
         },
         isSelected: true,
@@ -50,31 +83,13 @@ class _EventList extends State<EventList> {
         text: 'Mes participations',
         icon: Icons.event,
         onPressed: () {
-          setState(() => _headline);
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => ParticipationPage()),
-          );
-        },
-      ),
-      CollapsibleItem(
-        text: '(A) Création événement',
-        icon: Icons.create,
-        onPressed: () {
-          setState(() => _headline = ('create Event'));
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateEventScreen()),
-          );
-        },
-      ),
-      CollapsibleItem(
-        text: '(A) Liste événement',
-        icon: Icons.manage_search,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AdminEventList()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ParticipationPage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
           );
         },
       ),
@@ -82,9 +97,106 @@ class _EventList extends State<EventList> {
         text: 'Mon Profil',
         icon: Icons.face,
         onPressed: () {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => ProfilePage()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: '(A) Création événement',
+        icon: Icons.create,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const CreateEventScreen(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: '(A) Liste événement',
+        icon: Icons.manage_search,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const AdminEventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Deconexion',
+        icon: Icons.exit_to_app,
+        onPressed: () {
+          auth.signOut();
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ChoiceLogin(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        },
+      ),
+    ];
+  }
+
+  @override
+  List<CollapsibleItem> get _generateUserItems {
+    return [
+      CollapsibleItem(
+        text: 'Liste des events',
+        icon: Icons.search,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+        isSelected: true,
+      ),
+      CollapsibleItem(
+        text: 'Mes participations',
+        icon: Icons.event,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ParticipationPage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Mon Profil',
+        icon: Icons.face,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
           );
         },
       ),
@@ -117,6 +229,7 @@ class _EventList extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(36, 45, 165, 1),
@@ -259,6 +372,10 @@ class MyCustomMobileContent extends StatelessWidget {
                     // ---------- Container De l'event ----------
                     final DocumentSnapshot documentSnapshot =
                         Streamsnapshot.data!.docs[index];
+                    DateTime date = (documentSnapshot['Date'].toDate());
+                    var format = DateFormat('dd/MM/yyyy');
+                    var goodDate = format.format(date);
+
                     return Container(
                       height: 260,
                       margin: const EdgeInsets.only(
@@ -324,7 +441,7 @@ class MyCustomMobileContent extends StatelessWidget {
                                             const Icon(
                                                 Icons.calendar_today_rounded),
                                             Text(
-                                              " ${documentSnapshot['Date'].toDate().toString().split(" ")[0]}",
+                                              goodDate,
                                               style:
                                                   const TextStyle(fontSize: 16),
                                             )
@@ -459,15 +576,20 @@ class MyCustomDesktopContent extends StatelessWidget {
                     // ---------- Container De l'event ----------
                     final DocumentSnapshot documentSnapshot =
                         Streamsnapshot.data!.docs[index];
+                    DateTime date = (documentSnapshot['Date'].toDate());
+                    var format = DateFormat('dd/MM/yyyy');
+                    var goodDate = format.format(date);
                     // ---------- Container De l'event ----------
                     //
                     return Container(
-                      height: 400,
+                      height: 340,
                       margin: const EdgeInsets.only(
                           left: 18.0, right: 18.0, top: 25, bottom: 15),
                       padding: const EdgeInsets.only(
                         top: 2,
                         bottom: 2,
+                        left: 30,
+                        right: 30,
                       ),
                       decoration: const BoxDecoration(
                         color: Color.fromRGBO(250, 250, 250, 1),
@@ -505,7 +627,7 @@ class MyCustomDesktopContent extends StatelessWidget {
                                 // ---------- Container des informations de l'event ----------
                                 //
                                 Container(
-                                  height: 350,
+                                  height: 300,
                                   padding: const EdgeInsets.all(10),
                                   margin: const EdgeInsets.only(
                                       top: 2, left: 5, right: 5, bottom: 2),
@@ -526,11 +648,20 @@ class MyCustomDesktopContent extends StatelessWidget {
                                       Column(
                                         children: [
                                           Container(
-                                            width: 450,
-                                            height: 300,
-                                            decoration: const BoxDecoration(
-                                                color: Colors.black),
-                                          )
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.35,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.35,
+                                              decoration: const BoxDecoration(
+                                                  image: DecorationImage(
+                                                image: AssetImage(
+                                                    "illustration.png"),
+                                                fit: BoxFit.fill,
+                                              ))),
                                         ],
                                       ),
                                       const SizedBox(
@@ -546,7 +677,7 @@ class MyCustomDesktopContent extends StatelessWidget {
                                               const Icon(
                                                   Icons.calendar_today_rounded),
                                               Text(
-                                                " ${documentSnapshot['Date'].toDate().toString().split(" ")[0]}",
+                                                goodDate,
                                                 style: const TextStyle(
                                                     fontSize: 16),
                                               ),
