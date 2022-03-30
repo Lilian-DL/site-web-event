@@ -119,11 +119,6 @@ class _EventDetailsState extends State<EventDetails> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
@@ -261,7 +256,11 @@ Widget _body(Size size, BuildContext context, String id) {
                 children: [
                   Card(
                       elevation: 5,
-                      margin: const EdgeInsets.all(16.0),
+                      margin: const EdgeInsets.only(
+                        top: 50,
+                        left: 120.0,
+                        right: 120,
+                      ),
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30)),
@@ -269,9 +268,9 @@ Widget _body(Size size, BuildContext context, String id) {
                         child: Column(
                           children: [
                             Container(
-                              height: MediaQuery.of(context).size.height * 0.10,
+                              height: MediaQuery.of(context).size.height * 0.05,
                               decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 49, 49, 49),
+                                  color: Color.fromARGB(255, 245, 245, 245),
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(30),
                                     topRight: Radius.circular(30),
@@ -282,8 +281,8 @@ Widget _body(Size size, BuildContext context, String id) {
                                   '${data['Title']}',
                                   textAlign: TextAlign.start,
                                   style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 36,
+                                    color: Colors.black,
+                                    fontSize: 18,
                                   ),
                                 ),
                               ),
@@ -294,16 +293,19 @@ Widget _body(Size size, BuildContext context, String id) {
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
                                     ClipRRect(
-                                      borderRadius: BorderRadius.circular(5),
+                                      borderRadius: BorderRadius.circular(10),
                                       child: Image.network(
                                         'https://media.discordapp.net/attachments/902535167850197022/935814927443165254/unknown.png',
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.60,
+                                                0.40,
                                         height:
                                             MediaQuery.of(context).size.width *
-                                                0.50,
+                                                0.30,
                                       ),
                                     ),
 
@@ -312,30 +314,58 @@ Widget _body(Size size, BuildContext context, String id) {
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 235, 235, 235),
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                          color: const Color.fromARGB(
-                                              255, 235, 235, 235),
-                                          width: 4,
-                                        ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          const Icon(Icons.location_on),
-                                          Text(
-                                            "${data['Location']}",
-                                            textAlign: TextAlign.start,
+                                    Row(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                255, 235, 235, 235),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: const Color.fromARGB(
+                                                  255, 235, 235, 235),
+                                              width: 4,
+                                            ),
                                           ),
-                                        ],
-                                      ),
+                                          child: Row(
+                                            children: [
+                                              const Icon(Icons.location_on),
+                                              Text(
+                                                "${data['Location']}",
+                                                textAlign: TextAlign.start,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                255, 235, 235, 235),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: const Color.fromARGB(
+                                                  255, 235, 235, 235),
+                                              width: 4,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              const Icon(Icons.person),
+                                              Text(
+                                                  " ${data['Users'].length}/${data['PeopleLimit']}"),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     const SizedBox(
-                                      height: 5,
+                                      height: 10,
                                     ),
                                     Container(
                                       decoration: BoxDecoration(
@@ -358,29 +388,7 @@ Widget _body(Size size, BuildContext context, String id) {
                                       ),
                                     ),
                                     const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 235, 235, 235),
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                          color: const Color.fromARGB(
-                                              255, 235, 235, 235),
-                                          width: 4,
-                                        ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          const Icon(Icons.person),
-                                          Text(
-                                              " ${data['Users'].length}/${data['PeopleLimit']}"),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
+                                      height: 10,
                                     ),
                                     Container(
                                       decoration: BoxDecoration(
@@ -394,7 +402,7 @@ Widget _body(Size size, BuildContext context, String id) {
                                         ),
                                       ),
                                       width: MediaQuery.of(context).size.width *
-                                          0.50,
+                                          0.30,
                                       padding: const EdgeInsets.all(10),
                                       child: Text(
                                         '${data['Description']}',
