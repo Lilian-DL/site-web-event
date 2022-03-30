@@ -14,7 +14,7 @@ import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
 import 'package:web_plan/widgets/routes/participationsPage/participations_page.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
-
+import 'package:intl/intl.dart';
 import '../../slideBar/slide_Bar.dart';
 
 class AdminEventList extends StatefulWidget {
@@ -337,6 +337,9 @@ class MyCustomMobileContent extends StatelessWidget {
                     // ---------- Container De l'event ----------
                     final DocumentSnapshot documentSnapshot =
                         Streamsnapshot.data!.docs[index];
+                    DateTime date = (documentSnapshot['Date'].toDate());
+                    var format = DateFormat('dd/MM/yyyy');
+                    var goodDate = format.format(date);
                     return Container(
                       height: 260,
                       margin: const EdgeInsets.only(
@@ -402,7 +405,7 @@ class MyCustomMobileContent extends StatelessWidget {
                                             const Icon(
                                                 Icons.calendar_today_rounded),
                                             Text(
-                                              " ${documentSnapshot['Date'].toDate().toString().split(" ")[0]}",
+                                              goodDate,
                                               style:
                                                   const TextStyle(fontSize: 16),
                                             )
@@ -481,37 +484,9 @@ class MyCustomMobileContent extends StatelessWidget {
                                               const SizedBox(
                                                 width: 20,
                                               ),
-                                              TextButton.icon(
-                                                onPressed: () {
-                                                  deleteUserEvent(
-                                                      documentSnapshot.id);
-                                                  deleteEvent(
-                                                      documentSnapshot.id);
-                                                  Future.delayed(
-                                                      const Duration(
-                                                          milliseconds: 500),
-                                                      () {
-                                                    Navigator.pushNamed(
-                                                      context,
-                                                      '/event/list/admin',
-                                                    );
-                                                  });
-                                                },
-                                                icon: const Icon(Icons
-                                                    .remove_circle_outline),
-                                                label: const Text("Supprimer"),
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(
-                                                    const Color.fromARGB(
-                                                        255, 199, 16, 16),
-                                                  ),
-                                                  foregroundColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(Colors.white),
-                                                ),
-                                              ),
+                                              SupprButton(
+                                                  documentSnapshot:
+                                                      documentSnapshot)
                                             ],
                                           )
                                         ],
@@ -564,6 +539,9 @@ class MyCustomDesktopContent extends StatelessWidget {
                     // ---------- Container De l'event ----------
                     final DocumentSnapshot documentSnapshot =
                         Streamsnapshot.data!.docs[index];
+                    DateTime date = (documentSnapshot['Date'].toDate());
+                    var format = DateFormat('dd/MM/yyyy');
+                    var goodDate = format.format(date);
                     // ---------- Container De l'event ----------
                     //
                     return Container(
@@ -651,7 +629,7 @@ class MyCustomDesktopContent extends StatelessWidget {
                                               const Icon(
                                                   Icons.calendar_today_rounded),
                                               Text(
-                                                " ${documentSnapshot['Date'].toDate().toString().split(" ")[0]}",
+                                                goodDate,
                                                 style: const TextStyle(
                                                     fontSize: 16),
                                               ),
@@ -735,37 +713,9 @@ class MyCustomDesktopContent extends StatelessWidget {
                                               const SizedBox(
                                                 width: 20,
                                               ),
-                                              TextButton.icon(
-                                                onPressed: () {
-                                                  deleteUserEvent(
-                                                      documentSnapshot.id);
-                                                  deleteEvent(
-                                                      documentSnapshot.id);
-                                                  Future.delayed(
-                                                      const Duration(
-                                                          milliseconds: 500),
-                                                      () {
-                                                    Navigator.pushNamed(
-                                                      context,
-                                                      '/event/list/admin',
-                                                    );
-                                                  });
-                                                },
-                                                icon: const Icon(Icons
-                                                    .remove_circle_outline),
-                                                label: const Text("Supprimer"),
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(
-                                                    const Color.fromARGB(
-                                                        255, 199, 16, 16),
-                                                  ),
-                                                  foregroundColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(Colors.white),
-                                                ),
-                                              ),
+                                              SupprButton(
+                                                  documentSnapshot:
+                                                      documentSnapshot)
                                             ],
                                           )
                                         ],
@@ -784,6 +734,51 @@ class MyCustomDesktopContent extends StatelessWidget {
           }
           return const CircularProgressIndicator();
         });
+  }
+}
+
+class SupprButton extends StatelessWidget {
+  const SupprButton({
+    Key? key,
+    required this.documentSnapshot,
+  }) : super(key: key);
+
+  final DocumentSnapshot<Object?> documentSnapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          title: const Text("Suppression"),
+          content: const Text("Souhaitez-vous supprimer cet évenement ?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                deleteUserEvent(documentSnapshot.id);
+                deleteEvent(documentSnapshot.id);
+                Navigator.pop(context, 'Oui !');
+              },
+              child: const Text('Oui...'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Non !'),
+              child: const Text('Non !'),
+            ),
+          ],
+        ),
+      ),
+      icon: const Icon(Icons.remove_circle_outline),
+      label: const Text("Supprimer"),
+      style: ButtonStyle(
+        backgroundColor:
+            MaterialStateProperty.all<Color>(Color.fromARGB(255, 255, 2, 2)),
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+      ),
+    );
   }
 }
 

@@ -10,6 +10,7 @@ import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 import 'package:web_plan/widgets/routes/login/login.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
 import 'package:web_plan/widgets/routes/register/register.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +37,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+      supportedLocales: const [Locale('fr')],
       debugShowCheckedModeBanner: false,
       title: 'Application de planification',
       theme: ThemeData(),
