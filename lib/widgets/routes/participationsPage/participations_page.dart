@@ -553,7 +553,6 @@ class MyCustomMobileContent extends StatelessWidget {
         });
   }
 }
-
 class MyCustomDesktopContent extends StatelessWidget {
   String? idEventParticipation;
   MyCustomDesktopContent({Key? key, this.idEventParticipation})
@@ -772,6 +771,7 @@ class MyCustomDesktopContent extends StatelessWidget {
                                 ],
                               ),
                             ],
+
                           ),
                         ),
                       ],
