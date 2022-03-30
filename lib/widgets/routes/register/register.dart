@@ -20,8 +20,14 @@ class _Inscription extends State<Inscription> {
   final myControllerCode = TextEditingController();
   String? code;
   String messageError = "";
-  bool buttonState = true;
-  Icon usedIcon = const Icon(
+  bool buttonState1 = true;
+  bool buttonState2 = true;
+  Icon usedIcon1 = const Icon(
+    Icons.visibility_off,
+    color: Colors.grey,
+    size: 35,
+  );
+  Icon usedIcon2 = const Icon(
     Icons.visibility_off,
     color: Colors.grey,
     size: 35,
@@ -45,11 +51,11 @@ class _Inscription extends State<Inscription> {
     });
   }
 
-  WhichIcon() {
-    buttonState = !buttonState;
-    if (buttonState) {
+  WhichIcon1() {
+    buttonState1 = !buttonState1;
+    if (buttonState1) {
       setState(() {
-        usedIcon = const Icon(
+        usedIcon1 = const Icon(
           Icons.visibility_off,
           color: Colors.grey,
           size: 35,
@@ -57,7 +63,28 @@ class _Inscription extends State<Inscription> {
       });
     } else {
       setState(() {
-        usedIcon = const Icon(
+        usedIcon1 = const Icon(
+          Icons.visibility,
+          color: Colors.blueAccent,
+          size: 35,
+        );
+      });
+    }
+  }
+
+  WhichIcon2() {
+    buttonState2 = !buttonState2;
+    if (buttonState2) {
+      setState(() {
+        usedIcon2 = const Icon(
+          Icons.visibility_off,
+          color: Colors.grey,
+          size: 35,
+        );
+      });
+    } else {
+      setState(() {
+        usedIcon2 = const Icon(
           Icons.visibility,
           color: Colors.blueAccent,
           size: 35,
@@ -167,21 +194,30 @@ class _Inscription extends State<Inscription> {
                           padding: const EdgeInsetsDirectional.only(end: 12.0),
                           child: IconButton(
                               onPressed: () {
-                                WhichIcon();
+                                WhichIcon1();
                               },
-                              icon: usedIcon),
+                              icon: usedIcon1),
                         )),
-                    obscureText: buttonState,
+                    obscureText: buttonState1,
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   TextFormField(
-                      controller: myControllerCode,
-                      decoration: const InputDecoration(
+                    controller: myControllerCode,
+                    decoration: InputDecoration(
                         labelText: 'Code',
-                        border: OutlineInputBorder(),
-                      )),
+                        border: const OutlineInputBorder(),
+                        suffixIcon: Padding(
+                          padding: const EdgeInsetsDirectional.only(end: 12.0),
+                          child: IconButton(
+                              onPressed: () {
+                                WhichIcon2();
+                              },
+                              icon: usedIcon2),
+                        )),
+                    obscureText: buttonState2,
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
@@ -204,60 +240,46 @@ class _Inscription extends State<Inscription> {
                   TextButton(
                     child: const Text("S'inscrire"),
                     onPressed: () async {
+                      print(myControllerPassWord.text.length);
                       if (code == myControllerCode.text) {
                         if (myControllerEmail.text.isNotEmpty &&
                             myControllerPassWord.text.isNotEmpty &&
                             myControllerNom.text.isNotEmpty &&
                             myControllerPrenom.text.isNotEmpty) {
-                          final user = await auth.registerWithEmailAndPassword(
-                              myControllerEmail.text,
-                              myControllerPassWord.text);
-                          await Future.delayed(new Duration(milliseconds: 1000),
-                              () {
-                            if (user == null) {
-                              setState(() {
-                                messageError = "Une erreur est survenu !";
-                              });
-                            } else {
-                              addUser(
-                                  myControllerEmail.text,
-                                  myControllerNom.text,
-                                  myControllerPrenom.text);
-                              Navigator.pushReplacement(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder: (context, animation,
-                                          secondaryAnimation) =>
-                                      IntroScreen(),
-                                  transitionDuration:
-                                      const Duration(seconds: 0),
-                                ),
-                              );
-                            }
-                          });
-                          /*showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SimpleDialog(
-                                  children: <Widget>[
-                                    SimpleDialogOption(
-                                      onPressed: () {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          PageRouteBuilder(
-                                            pageBuilder: (context, animation,
-                                                    secondaryAnimation) =>
-                                                const Inscription(),
-                                            transitionDuration:
-                                                const Duration(seconds: 0),
-                                          ),
-                                        );
-                                      },
-                                      child: const Text("Inscription"),
-                                    ),
-                                  ],
+                          if (myControllerPassWord.text.length >= 6) {
+                            final user =
+                                await auth.registerWithEmailAndPassword(
+                                    myControllerEmail.text,
+                                    myControllerPassWord.text);
+                            await Future.delayed(
+                                new Duration(milliseconds: 1000), () {
+                              if (user == null) {
+                                setState(() {
+                                  messageError = "Une erreur est survenu !";
+                                });
+                              } else {
+                                addUser(
+                                    myControllerEmail.text,
+                                    myControllerNom.text,
+                                    myControllerPrenom.text);
+                                Navigator.pushReplacement(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        IntroScreen(),
+                                    transitionDuration:
+                                        const Duration(seconds: 0),
+                                  ),
                                 );
-                              });*/
+                              }
+                            });
+                          } else {
+                            setState(() {
+                              messageError =
+                                  "Le mot de passe de contenir 6 caractères ou plus !";
+                            });
+                          }
                         } else {
                           setState(() {
                             messageError =
