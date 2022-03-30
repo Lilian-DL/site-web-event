@@ -1,8 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collapsible_sidebar/collapsible_sidebar.dart';
+import 'package:collapsible_sidebar/collapsible_sidebar/collapsible_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:web_plan/responsive_layout.dart';
-import '../../slideBar/slide_Bar.dart';
+import 'package:web_plan/services/auth.dart';
+import 'package:web_plan/widgets/routes/adminCreateEvent/admin_create_event.dart';
+import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
+import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
+import 'package:web_plan/widgets/routes/participationsPage/participations_page.dart';
+import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
 
 class EventList extends StatefulWidget {
   const EventList({Key? key}) : super(key: key);
@@ -12,32 +19,99 @@ class EventList extends StatefulWidget {
 }
 
 class _EventList extends State<EventList> {
-  // int _selectedIndex = 0;
-  // // static const TextStyle optionStyle =
-  // //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  //   if (index == 1) {
-  //     Navigator.pushReplacement(
-  //         // à remplacer par la page "mes participations"
-  //         context,
-  //         MaterialPageRoute(builder: (context) => ParticipationPage()));
-  //   }
-  //   if (index == 2) {
-  //     Navigator.pushReplacement(
-  //         context, MaterialPageRoute(builder: (context) => ProfilePage()));
-  //   }
-  // }
-
+  late List<CollapsibleItem> _items;
   late String _headline;
   AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
+  final AuthService auth = AuthService();
 
   @override
   void initState() {
     super.initState();
+    _items = _generateItems;
+    _headline = _items.firstWhere((item) => item.isSelected).text;
+  }
+
+  @override
+  List<CollapsibleItem> get _generateItems {
+    return [
+      CollapsibleItem(
+        text: 'Liste des events',
+        icon: Icons.search,
+        onPressed: () {
+          setState(() => _headline);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EventList()),
+          );
+        },
+        isSelected: true,
+      ),
+      CollapsibleItem(
+        text: 'Mes participations',
+        icon: Icons.event,
+        onPressed: () {
+          setState(() => _headline);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ParticipationPage()),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: '(A) Création événement',
+        icon: Icons.create,
+        onPressed: () {
+          setState(() => _headline = ('create Event'));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateEventScreen()),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: '(A) Liste événement',
+        icon: Icons.manage_search,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AdminEventList()),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Mon Profil',
+        icon: Icons.face,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProfilePage()),
+          );
+        },
+      ),
+
+      // CollapsibleItem(
+      //   text: 'Face',
+      //   icon: Icons.face,
+      //   onPressed: () => setState(() => _headline = 'Face'),
+      // ),
+
+      CollapsibleItem(
+        text: 'Deconexion',
+        icon: Icons.exit_to_app,
+        onPressed: () {
+          auth.signOut();
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ChoiceLogin(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        },
+      ),
+    ];
   }
 
   @override
@@ -70,12 +144,57 @@ class _EventList extends State<EventList> {
         child: Row(
           children: <Widget>[
             Container(
-                constraints: const BoxConstraints(
-                  maxWidth: double.infinity,
-                  minWidth: 100,
+              constraints: const BoxConstraints(
+                maxWidth: double.infinity,
+                minWidth: 100,
+              ),
+              // color : Colors.green,
+              child: CollapsibleSidebar(
+                isCollapsed: false,
+                items: _items,
+                avatarImg: _avatarImg,
+                title: 'Navigation',
+                onTitleTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EventList()),
+                  );
+                },
+                // onTitleTap: () {
+                //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                //       content: Text('Yay! Flutter Collapsible Sidebar!')));
+                // },
+                body: const Center(child: Center()),
+                toggleTitle: 'Fermer',
+                backgroundColor: Colors.white,
+                selectedTextColor: Colors.white,
+                selectedIconBox: const Color.fromRGBO(30, 64, 175, 1),
+                selectedIconColor: const Color(0xffF3F7F7),
+                unselectedIconColor: const Color(0xff2B3138),
+                unselectedTextColor: const Color(0xff2B3138),
+
+                sidebarBoxShadow: const [
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 20,
+                    spreadRadius: 0.01,
+                    offset: Offset(3, 3),
+                  ),
+                ],
+
+                textStyle: const TextStyle(
+                  fontSize: 15,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.black,
                 ),
-                // color : Colors.green,
-                child: SlideBar()),
+                titleStyle: const TextStyle(
+                    fontSize: 20,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+                // toggleTitleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
             Expanded(
               flex: 1,
               child: Container(
@@ -102,11 +221,9 @@ class _EventList extends State<EventList> {
         maxHeight: 800.0,
         maxWidth: 10000,
       ),
-
       child: const ResponsiveLayout(
           mobileBody: MyCustomMobileContent(),
           desktopBody: MyCustomDesktopContent()),
-
     );
   }
 }
@@ -262,8 +379,6 @@ class MyCustomMobileContent extends StatelessWidget {
                                             children: [
                                               TextButton.icon(
                                                 onPressed: () {
-                                                  print("arguments: " +
-                                                      documentSnapshot.id);
                                                   Navigator.pushNamed(
                                                     context,
                                                     '/event/details',
@@ -292,23 +407,6 @@ class MyCustomMobileContent extends StatelessWidget {
                                               myEvent(
                                                   idEvent: documentSnapshot.id
                                                       .toString()),
-                                              // TextButton.icon(
-                                              //   onPressed: () {},
-                                              //   icon: const Icon(
-                                              //       Icons.check_circle),
-                                              //   label: const Text("S'inscrire"),
-                                              //   style: ButtonStyle(
-                                              //     backgroundColor:
-                                              //         MaterialStateProperty.all<
-                                              //             Color>(
-                                              //       const Color.fromRGBO(
-                                              //           3, 110, 20, 1),
-                                              //     ),
-                                              //     foregroundColor:
-                                              //         MaterialStateProperty.all<
-                                              //             Color>(Colors.white),
-                                              //   ),
-                                              // ),
                                             ],
                                           )
                                         ],
@@ -589,10 +687,7 @@ class _myEventState extends State<myEvent> {
   @override
   Widget build(BuildContext context) {
     User? result = FirebaseAuth.instance.currentUser;
-    CollectionReference userRef = FirebaseFirestore.instance
-        .collection('User')
-        .doc(result!.uid)
-        .collection('MyEvent');
+    CollectionReference userRef = FirebaseFirestore.instance.collection('User');
 
     Text dialog = const Text('');
     Text unsubDialog = const Text('Désinscription');
@@ -619,13 +714,24 @@ class _myEventState extends State<myEvent> {
     var unsubButtonColor = MaterialStateProperty.all<Color>(
         const Color.fromARGB(255, 233, 17, 17));
 
+    bool contains(data, idEvent) {
+      bool boolean = false;
+      for (var d in data) {
+        if (d == idEvent) {
+          boolean = true;
+        }
+      }
+      return boolean;
+    }
+
     return FutureBuilder(
-        future: userRef.doc(widget.idEvent.toString()).get(),
+        future: userRef.doc(result!.uid).get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasData) {
-            print('coucou');
-            if (snapshot.data!.exists) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            if (contains(data['MyEvent'], widget.idEvent)) {
               dialog = unsubDialog;
               question = unsubQuestion;
               buttonText = unsubButtonText;
@@ -713,14 +819,11 @@ class _myEventState extends State<myEvent> {
 
 Future<void> addEvent(idEvent) {
   User? result = FirebaseAuth.instance.currentUser;
-  CollectionReference users = FirebaseFirestore.instance
-      .collection('User')
-      .doc(result!.uid)
-      .collection('MyEvent');
+  CollectionReference users = FirebaseFirestore.instance.collection('User');
   return users
-      .doc(idEvent)
-      .set({
-        'idEvent': idEvent,
+      .doc(result!.uid)
+      .update({
+        'MyEvent': FieldValue.arrayUnion([idEvent]),
       })
       .then((value) => print("IdEvent Added"))
       .catchError((error) => print("Failed to add : $error"));
@@ -741,13 +844,12 @@ Future<void> addCountEvent(idEvent) {
 
 Future<void> deleteEvent(idEvent) {
   User? result = FirebaseAuth.instance.currentUser;
-  CollectionReference users = FirebaseFirestore.instance
-      .collection('User')
-      .doc(result!.uid)
-      .collection('MyEvent');
+  CollectionReference users = FirebaseFirestore.instance.collection('User');
   return users
-      .doc(idEvent)
-      .delete()
+      .doc(result!.uid)
+      .update({
+        'MyEvent': FieldValue.arrayRemove([idEvent])
+      })
       .then((value) => print("IdEvent delete"))
       .catchError((error) => print("Failed to delete : $error"));
 }

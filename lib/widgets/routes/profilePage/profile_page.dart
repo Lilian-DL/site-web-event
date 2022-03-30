@@ -2,6 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:web_plan/services/auth.dart';
+import 'package:web_plan/widgets/routes/adminCreateEvent/admin_create_event.dart';
+import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
+import 'package:web_plan/widgets/routes/eventList/event_list.dart';
+import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
+import 'package:web_plan/widgets/routes/participationsPage/participations_page.dart';
 import 'package:web_plan/widgets/slideBar/slide_bar.dart';
 
 // class ProfilePage extends StatelessWidget {
@@ -45,15 +51,99 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   User? result = FirebaseAuth.instance.currentUser;
-  int _selectedIndex = 2;
-
   late List<CollapsibleItem> _items;
   late String _headline;
-  AssetImage _avatarImg = AssetImage('');
+  AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
+  final AuthService auth = AuthService();
 
   @override
   void initState() {
     super.initState();
+    _items = _generateItems;
+    _headline = _items.firstWhere((item) => item.isSelected).text;
+  }
+
+  @override
+  List<CollapsibleItem> get _generateItems {
+    return [
+      CollapsibleItem(
+        text: 'Liste des events',
+        icon: Icons.search,
+        onPressed: () {
+          setState(() => _headline);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EventList()),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Mes participations',
+        icon: Icons.event,
+        onPressed: () {
+          setState(() => _headline);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ParticipationPage()),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: '(A) Création événement',
+        icon: Icons.create,
+        onPressed: () {
+          setState(() => _headline = ('create Event'));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateEventScreen()),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: '(A) Liste événement',
+        icon: Icons.manage_search,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AdminEventList()),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Mon Profil',
+        icon: Icons.face,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProfilePage()),
+          );
+        },
+        isSelected: true,
+      ),
+
+      // CollapsibleItem(
+      //   text: 'Face',
+      //   icon: Icons.face,
+      //   onPressed: () => setState(() => _headline = 'Face'),
+      // ),
+
+      CollapsibleItem(
+        text: 'Deconexion',
+        icon: Icons.exit_to_app,
+        onPressed: () {
+          auth.signOut();
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ChoiceLogin(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        },
+      ),
+    ];
   }
 
   @override
@@ -86,12 +176,57 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Row(
           children: <Widget>[
             Container(
-                constraints: const BoxConstraints(
-                  maxWidth: double.infinity,
-                  minWidth: 100,
+              constraints: const BoxConstraints(
+                maxWidth: double.infinity,
+                minWidth: 100,
+              ),
+              // color : Colors.green,
+              child: CollapsibleSidebar(
+                isCollapsed: false,
+                items: _items,
+                avatarImg: _avatarImg,
+                title: 'Navigation',
+                onTitleTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EventList()),
+                  );
+                },
+                // onTitleTap: () {
+                //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                //       content: Text('Yay! Flutter Collapsible Sidebar!')));
+                // },
+                body: const Center(child: Center()),
+                toggleTitle: 'Fermer',
+                backgroundColor: Colors.white,
+                selectedTextColor: Colors.white,
+                selectedIconBox: const Color.fromRGBO(30, 64, 175, 1),
+                selectedIconColor: const Color(0xffF3F7F7),
+                unselectedIconColor: const Color(0xff2B3138),
+                unselectedTextColor: const Color(0xff2B3138),
+
+                sidebarBoxShadow: const [
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 20,
+                    spreadRadius: 0.01,
+                    offset: Offset(3, 3),
+                  ),
+                ],
+
+                textStyle: const TextStyle(
+                  fontSize: 15,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.black,
                 ),
-                // color : Colors.green,
-                child: SlideBar()),
+                titleStyle: const TextStyle(
+                    fontSize: 20,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+                // toggleTitleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
             Expanded(
               flex: 1,
               child: Container(
