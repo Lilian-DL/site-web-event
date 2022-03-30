@@ -60,18 +60,18 @@ class _AdminEventList extends State<AdminEventList> {
   @override
   List<CollapsibleItem> get _generateItems {
     return [
-           CollapsibleItem(
+      CollapsibleItem(
         text: 'Liste des events',
         icon: Icons.search,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   EventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -79,13 +79,27 @@ class _AdminEventList extends State<AdminEventList> {
         icon: Icons.event,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ParticipationPage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ParticipationPage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Mon Profil',
+        icon: Icons.face,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -93,13 +107,13 @@ class _AdminEventList extends State<AdminEventList> {
         icon: Icons.create,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   CreateEventScreen(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  CreateEventScreen(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -107,29 +121,15 @@ class _AdminEventList extends State<AdminEventList> {
         icon: Icons.manage_search,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   AdminEventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  AdminEventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
         isSelected: true,
-      ),
-      CollapsibleItem(
-        text: 'Mon Profil',
-        icon: Icons.face,
-        onPressed: () {
-          Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ProfilePage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
-        },
       ),
 
       // CollapsibleItem(

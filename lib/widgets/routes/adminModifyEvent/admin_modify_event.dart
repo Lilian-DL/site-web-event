@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar/collapsible_item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:web_plan/services/auth.dart';
@@ -55,18 +56,18 @@ class _EditEventScreenState extends State<EditEventScreen> {
   @override
   List<CollapsibleItem> get _generateItems {
     return [
-            CollapsibleItem(
+      CollapsibleItem(
         text: 'Liste des events',
         icon: Icons.search,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   EventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -74,13 +75,13 @@ class _EditEventScreenState extends State<EditEventScreen> {
         icon: Icons.event,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ParticipationPage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ParticipationPage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -88,13 +89,13 @@ class _EditEventScreenState extends State<EditEventScreen> {
         icon: Icons.create,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   CreateEventScreen(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  CreateEventScreen(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -102,14 +103,14 @@ class _EditEventScreenState extends State<EditEventScreen> {
         icon: Icons.manage_search,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   AdminEventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
-        }, 
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  AdminEventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
         isSelected: true,
       ),
       CollapsibleItem(
@@ -117,13 +118,13 @@ class _EditEventScreenState extends State<EditEventScreen> {
         icon: Icons.face,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ProfilePage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
 
