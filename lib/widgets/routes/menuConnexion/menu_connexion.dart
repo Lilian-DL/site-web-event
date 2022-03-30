@@ -53,7 +53,7 @@ class _ChoiceLogin extends State<ChoiceLogin> {
                 Column(
                   children: [
                     SizedBox(
-                      height:75,
+                      height: 75,
                       width: 200,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -102,8 +102,9 @@ class _ChoiceLogin extends State<ChoiceLogin> {
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.10),
-                   const DownloadButton(url: "https://firebasestorage.googleapis.com/v0/b/planification-8efe7.appspot.com/o/apk_mobile%2Fapp-release.apk?alt=media&token=00fbacae-0f97-4350-9601-f07dc8d44bc0"),
-
+                    const DownloadButton(
+                        url:
+                            "https://firebasestorage.googleapis.com/v0/b/planification-8efe7.appspot.com/o/apk_mobile%2Fapp-release.apk?alt=media&token=9a58a996-e76b-41c3-8494-7f887d9cf73c"),
                   ],
                 ),
               ],
