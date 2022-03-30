@@ -76,6 +76,20 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         },
       ),
       CollapsibleItem(
+        text: 'Mon Profil',
+        icon: Icons.face,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
         text: '(A) Création événement',
         icon: Icons.create,
         onPressed: () {
@@ -104,27 +118,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           );
         },
       ),
-      CollapsibleItem(
-        text: 'Mon Profil',
-        icon: Icons.face,
-        onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  const ProfilePage(),
-              transitionDuration: const Duration(seconds: 0),
-            ),
-          );
-        },
-      ),
-
-      // CollapsibleItem(
-      //   text: 'Face',
-      //   icon: Icons.face,
-      //   onPressed: () => setState(() => _headline = 'Face'),
-      // ),
-
       CollapsibleItem(
         text: 'Deconexion',
         icon: Icons.exit_to_app,

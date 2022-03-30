@@ -27,8 +27,38 @@ class _EventList extends State<EventList> {
   @override
   void initState() {
     super.initState();
-    _items = _generateItems;
+    _items = _generateUserItems;
+    CheckItem();
     _headline = _items.firstWhere((item) => item.isSelected).text;
+  }
+
+  Future CheckItem() async {
+    bool boolean = await checkItemBool();
+    if (boolean == true) {
+      setState(() {
+        _items = _generateItems;
+      });
+    } else {
+      setState(() {
+        _items = _generateUserItems;
+      });
+    }
+  }
+
+  Future<bool> checkItemBool() async {
+    User? result = FirebaseAuth.instance.currentUser;
+    bool boolean = await FirebaseFirestore.instance
+        .collection('User')
+        .doc(result!.uid)
+        .get()
+        .then((value) {
+      if (value['Admin'] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return boolean;
   }
 
   @override
@@ -64,6 +94,20 @@ class _EventList extends State<EventList> {
         },
       ),
       CollapsibleItem(
+        text: 'Mon Profil',
+        icon: Icons.face,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
         text: '(A) Création événement',
         icon: Icons.create,
         onPressed: () {
@@ -71,7 +115,7 @@ class _EventList extends State<EventList> {
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  CreateEventScreen(),
+                  const CreateEventScreen(),
               transitionDuration: const Duration(seconds: 0),
             ),
           );
@@ -85,7 +129,58 @@ class _EventList extends State<EventList> {
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  AdminEventList(),
+                  const AdminEventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Deconexion',
+        icon: Icons.exit_to_app,
+        onPressed: () {
+          auth.signOut();
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ChoiceLogin(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        },
+      ),
+    ];
+  }
+
+  @override
+  List<CollapsibleItem> get _generateUserItems {
+    return [
+      CollapsibleItem(
+        text: 'Liste des events',
+        icon: Icons.search,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+        isSelected: true,
+      ),
+      CollapsibleItem(
+        text: 'Mes participations',
+        icon: Icons.event,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ParticipationPage(),
               transitionDuration: const Duration(seconds: 0),
             ),
           );
