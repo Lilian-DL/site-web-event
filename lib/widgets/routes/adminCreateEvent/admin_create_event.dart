@@ -54,10 +54,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         text: 'Liste des events',
         icon: Icons.search,
         onPressed: () {
-          setState(() => _headline);
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const EventList()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
           );
         },
       ),
@@ -65,10 +68,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         text: 'Mes participations',
         icon: Icons.event,
         onPressed: () {
-          setState(() => _headline);
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const ParticipationPage()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ParticipationPage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
           );
         },
       ),
@@ -76,10 +82,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         text: '(A) Création événement',
         icon: Icons.create,
         onPressed: () {
-          setState(() => _headline = ('create Event'));
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => CreateEventScreen()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  CreateEventScreen(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
           );
         },
         isSelected: true,
@@ -88,9 +97,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         text: '(A) Liste événement',
         icon: Icons.manage_search,
         onPressed: () {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const AdminEventList()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  AdminEventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
           );
         },
       ),
@@ -98,9 +111,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         text: 'Mon Profil',
         icon: Icons.face,
         onPressed: () {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const ProfilePage()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
           );
         },
       ),

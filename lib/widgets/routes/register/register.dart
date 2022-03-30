@@ -316,6 +316,7 @@ Future<void> addUser(email, nom, prenom) {
         'Email': email,
         'FirstName': prenom,
         'LastName': nom,
+        'MyEvent': FieldValue.arrayUnion([]),
         'Picture':
             "https://media.discordapp.net/attachments/902535167850197022/935551661001302026/Clem.jpg?width=661&height=663",
       })
