@@ -12,6 +12,7 @@ import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
 import '../profilePage/profile_page.dart';
 import 'package:web_plan/responsive_layout.dart';
 import '../../slideBar/slide_Bar.dart';
+import 'package:intl/intl.dart';
 
 class ParticipationPage extends StatefulWidget {
   const ParticipationPage({Key? key}) : super(key: key);
@@ -278,6 +279,9 @@ class MyCustomMobileContent extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
+            DateTime date = (data['Date'].toDate());
+            var format = DateFormat('dd/MM/yyyy');
+            var goodDate = format.format(date);
             return Container(
               height: 260,
               margin: const EdgeInsets.only(
@@ -340,7 +344,7 @@ class MyCustomMobileContent extends StatelessWidget {
                                 Row(children: [
                                   const Icon(Icons.calendar_today),
                                   Text(
-                                    " ${data['Date'].toDate().toString().split(" ")[0]}",
+                                    goodDate,
                                     style: const TextStyle(fontSize: 16),
                                   )
                                 ]),
@@ -452,6 +456,9 @@ class MyCustomDesktopContent extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
+            DateTime date = (data['Date'].toDate());
+            var format = DateFormat('dd/MM/yyyy');
+            var goodDate = format.format(date);
             return Container(
               height: 400,
               margin: const EdgeInsets.only(
@@ -535,7 +542,7 @@ class MyCustomDesktopContent extends StatelessWidget {
                                     children: [
                                       const Icon(Icons.calendar_today_rounded),
                                       Text(
-                                        " ${data['Date'].toDate().toString().split(" ")[0]}",
+                                        goodDate,
                                         style: const TextStyle(fontSize: 16),
                                       ),
                                       const SizedBox(

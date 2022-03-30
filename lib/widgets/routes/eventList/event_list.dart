@@ -3,6 +3,7 @@ import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar/collapsible_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:universal_html/html.dart';
 import 'package:web_plan/responsive_layout.dart';
 import 'package:web_plan/services/auth.dart';
 import 'package:web_plan/widgets/routes/adminCreateEvent/admin_create_event.dart';
@@ -10,6 +11,7 @@ import 'package:web_plan/widgets/routes/adminEventList/admin_event_list.dart';
 import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
 import 'package:web_plan/widgets/routes/participationsPage/participations_page.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
+import 'package:intl/intl.dart';
 
 class EventList extends StatefulWidget {
   const EventList({Key? key}) : super(key: key);
@@ -117,6 +119,7 @@ class _EventList extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(36, 45, 165, 1),
@@ -259,6 +262,10 @@ class MyCustomMobileContent extends StatelessWidget {
                     // ---------- Container De l'event ----------
                     final DocumentSnapshot documentSnapshot =
                         Streamsnapshot.data!.docs[index];
+                    DateTime date = (documentSnapshot['Date'].toDate());
+                    var format = DateFormat('dd/MM/yyyy');
+                    var goodDate = format.format(date);
+
                     return Container(
                       height: 260,
                       margin: const EdgeInsets.only(
@@ -324,7 +331,7 @@ class MyCustomMobileContent extends StatelessWidget {
                                             const Icon(
                                                 Icons.calendar_today_rounded),
                                             Text(
-                                              " ${documentSnapshot['Date'].toDate().toString().split(" ")[0]}",
+                                              goodDate,
                                               style:
                                                   const TextStyle(fontSize: 16),
                                             )
@@ -459,6 +466,9 @@ class MyCustomDesktopContent extends StatelessWidget {
                     // ---------- Container De l'event ----------
                     final DocumentSnapshot documentSnapshot =
                         Streamsnapshot.data!.docs[index];
+                    DateTime date = (documentSnapshot['Date'].toDate());
+                    var format = DateFormat('dd/MM/yyyy');
+                    var goodDate = format.format(date);
                     // ---------- Container De l'event ----------
                     //
                     return Container(
@@ -546,7 +556,7 @@ class MyCustomDesktopContent extends StatelessWidget {
                                               const Icon(
                                                   Icons.calendar_today_rounded),
                                               Text(
-                                                " ${documentSnapshot['Date'].toDate().toString().split(" ")[0]}",
+                                                goodDate,
                                                 style: const TextStyle(
                                                     fontSize: 16),
                                               ),

@@ -9,7 +9,7 @@ import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
 import 'package:web_plan/widgets/routes/participationsPage/participations_page.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
-import 'package:web_plan/widgets/slideBar/slide_bar.dart';
+import 'package:intl/intl.dart';
 
 class EventDetails extends StatefulWidget {
   final String id;
@@ -116,11 +116,6 @@ class _EventDetailsState extends State<EventDetails> {
         },
       ),
     ];
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -241,6 +236,9 @@ Widget _body(Size size, BuildContext context, String id) {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
+          DateTime date = (data['Date'].toDate());
+          var format = DateFormat('dd/MM/yyyy');
+          var goodDate = format.format(date);
           return Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -351,9 +349,7 @@ Widget _body(Size size, BuildContext context, String id) {
                                       child: Row(
                                         children: [
                                           const Icon(Icons.calendar_today),
-                                          Text(
-                                              ' ${data['Date'].toDate().toString().split(" ")[0]} '
-                                              '${data['Date'].toDate().toString().split(" ")[1].substring(0, 5)}'),
+                                          Text(goodDate)
                                         ],
                                       ),
                                     ),
