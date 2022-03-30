@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:web_plan/widgets/routes/loadingScreen/loading_screen.dart';
-import '../profilePage/profile_page.dart';
 import 'package:web_plan/responsive_layout.dart';
 import '../../slideBar/slide_Bar.dart';
 
