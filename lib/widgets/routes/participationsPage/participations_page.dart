@@ -389,7 +389,7 @@ class MyCustomMobileContent extends StatelessWidget {
                                       onPressed: () {
                                         Navigator.pushNamed(
                                           context,
-                                          '/details',
+                                          '/event/details',
                                           arguments:
                                               idEventParticipation.toString(),
                                         );
