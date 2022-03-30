@@ -579,12 +579,14 @@ class MyCustomDesktopContent extends StatelessWidget {
             var format = DateFormat('dd/MM/yyyy');
             var goodDate = format.format(date);
             return Container(
-              height: 400,
+              height: 340,
               margin: const EdgeInsets.only(
                   left: 18.0, right: 18.0, top: 25, bottom: 15),
               padding: const EdgeInsets.only(
                 top: 2,
                 bottom: 2,
+                left: 30,
+                right: 30,
               ),
               decoration: const BoxDecoration(
                 color: Color.fromRGBO(250, 250, 250, 1),
@@ -622,7 +624,7 @@ class MyCustomDesktopContent extends StatelessWidget {
                         // ---------- Container des informations de l'event ----------
                         //
                         Container(
-                          height: 350,
+                          height: 300,
                           padding: const EdgeInsets.all(10),
                           margin: const EdgeInsets.only(
                               top: 2, left: 5, right: 5, bottom: 2),
@@ -642,11 +644,17 @@ class MyCustomDesktopContent extends StatelessWidget {
                               Column(
                                 children: [
                                   Container(
-                                    width: 450,
-                                    height: 300,
-                                    decoration: const BoxDecoration(
-                                        color: Colors.black),
-                                  )
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.35,
+                                      width:
+                                          MediaQuery.of(context).size.height *
+                                              0.35,
+                                      decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                        image: AssetImage("illustration.png"),
+                                        fit: BoxFit.fill,
+                                      ))),
                                 ],
                               ),
                               const SizedBox(
