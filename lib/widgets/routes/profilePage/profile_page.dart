@@ -139,6 +139,34 @@ class _ProfilePageState extends State<ProfilePage> {
         },
         isSelected: true,
       ),
+      CollapsibleItem(
+        text: '(A) Création événement',
+        icon: Icons.create,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const CreateEventScreen(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: '(A) Liste événement',
+        icon: Icons.manage_search,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const AdminEventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
 
       // CollapsibleItem(
       //   text: 'Face',
