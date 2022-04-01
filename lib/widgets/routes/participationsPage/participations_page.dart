@@ -24,7 +24,7 @@ class ParticipationPage extends StatefulWidget {
 class _ParticipationPage extends State<ParticipationPage> {
   late List<CollapsibleItem> _items;
   late String _headline;
-  AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
+  AssetImage _avatarImg = AssetImage('web/assets/logoWeb.png');
   final AuthService auth = AuthService();
 
   @override
@@ -553,6 +553,7 @@ class MyCustomMobileContent extends StatelessWidget {
         });
   }
 }
+
 class MyCustomDesktopContent extends StatelessWidget {
   String? idEventParticipation;
   MyCustomDesktopContent({Key? key, this.idEventParticipation})
@@ -651,7 +652,8 @@ class MyCustomDesktopContent extends StatelessWidget {
                                               0.35,
                                       decoration: const BoxDecoration(
                                           image: DecorationImage(
-                                        image: AssetImage("illustration.png"),
+                                        image: AssetImage(
+                                            "web/assets/illustration.png"),
                                         fit: BoxFit.fill,
                                       ))),
                                 ],
@@ -771,7 +773,6 @@ class MyCustomDesktopContent extends StatelessWidget {
                                 ],
                               ),
                             ],
-
                           ),
                         ),
                       ],
