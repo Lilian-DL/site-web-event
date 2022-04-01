@@ -34,7 +34,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   var WhitelistingTextInputFormatter;
 
   late List<CollapsibleItem> _items;
-  final AssetImage _avatarImg = const AssetImage('../assets/logoWeb.png');
+  final AssetImage _avatarImg = const AssetImage('web/assets/logoWeb.png');
   final AuthService auth = AuthService();
 
   @override

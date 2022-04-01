@@ -25,7 +25,7 @@ class EventDetails extends StatefulWidget {
 class _EventDetailsState extends State<EventDetails> {
   late List<CollapsibleItem> _items;
   late String _headline;
-  AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
+  AssetImage _avatarImg = AssetImage('web/assets/logoWeb.png');
   final AuthService auth = AuthService();
 
   @override
@@ -124,7 +124,6 @@ class _EventDetailsState extends State<EventDetails> {
             ),
           );
         },
-        isSelected: true,
       ),
       CollapsibleItem(
         text: '(A) Liste événement',
@@ -426,7 +425,8 @@ Widget _body(Size size, BuildContext context, String id) {
                                                 0.40,
                                         decoration: const BoxDecoration(
                                             image: DecorationImage(
-                                          image: AssetImage("illustration.png"),
+                                          image: AssetImage(
+                                              "web/assets/illustration.png"),
                                           fit: BoxFit.fill,
                                         ))),
 

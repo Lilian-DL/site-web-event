@@ -47,7 +47,7 @@ class _AdminEventList extends State<AdminEventList> {
 
   late List<CollapsibleItem> _items;
   late String _headline;
-  AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
+  AssetImage _avatarImg = AssetImage('web/assets/logoWeb.png');
   final AuthService auth = AuthService();
 
   @override
@@ -622,7 +622,7 @@ class MyCustomDesktopContent extends StatelessWidget {
                                               decoration: const BoxDecoration(
                                                   image: DecorationImage(
                                                 image: AssetImage(
-                                                    "illustration.png"),
+                                                    "web/assets/illustration.png"),
                                                 fit: BoxFit.fill,
                                               ))),
                                         ],

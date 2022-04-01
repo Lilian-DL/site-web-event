@@ -42,7 +42,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
   var WhitelistingTextInputFormatter;
   late List<CollapsibleItem> _items;
   late String _headline;
-  AssetImage _avatarImg = const AssetImage('../assets/logoWeb.png');
+  AssetImage _avatarImg = const AssetImage('web/assets/logoWeb.png');
   final AuthService auth = AuthService();
 
   @override
