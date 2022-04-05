@@ -175,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
       // ),
 
       CollapsibleItem(
-        text: 'Deconexion',
+        text: 'Déconnexion',
         icon: Icons.exit_to_app,
         onPressed: () {
           auth.signOut();
@@ -247,7 +247,7 @@ class _ProfilePageState extends State<ProfilePage> {
       // ),
 
       CollapsibleItem(
-        text: 'Deconexion',
+        text: 'Déconnexion',
         icon: Icons.exit_to_app,
         onPressed: () {
           auth.signOut();
@@ -528,34 +528,34 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: 30,
                       ),
                       // ---------- Nombre de participations ---------- //
-                      Card(
-                        color: const Color.fromARGB(31, 236, 236, 236),
-                        margin: const EdgeInsets.only(left: 50.0, right: 50.0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  children: const [
-                                    Text(
-                                      "Ceci est une description de ma personne",
-                                      style: TextStyle(
-                                          color: Colors.black54,
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    SizedBox(
-                                      height: 7,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Card(
+                      //   color: const Color.fromARGB(31, 236, 236, 236),
+                      //   margin: const EdgeInsets.only(left: 50.0, right: 50.0),
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(8.0),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //       children: [
+                      //         Expanded(
+                      //           child: Column(
+                      //             children: const [
+                      //               Text(
+                      //                 "Je suis un musicien qui aime la musique ",
+                      //                 style: TextStyle(
+                      //                     color: Colors.black54,
+                      //                     fontSize: 16.0,
+                      //                     fontWeight: FontWeight.w500),
+                      //               ),
+                      //               SizedBox(
+                      //                 height: 7,
+                      //               ),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                       const SizedBox(
                         height: 32,
                       ),
