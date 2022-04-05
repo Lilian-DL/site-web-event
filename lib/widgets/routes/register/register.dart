@@ -313,6 +313,7 @@ Future<void> addUser(email, nom, prenom) {
   return users
       .doc(result!.uid)
       .set({
+        'Admin': false,
         'Email': email,
         'FirstName': prenom,
         'LastName': nom,
