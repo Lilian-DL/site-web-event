@@ -14,7 +14,7 @@ import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
 import 'package:web_plan/widgets/routes/participationsPage/participations_page.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
-
+import 'package:intl/intl.dart';
 import '../../slideBar/slide_Bar.dart';
 
 class AdminEventList extends StatefulWidget {
@@ -47,7 +47,7 @@ class _AdminEventList extends State<AdminEventList> {
 
   late List<CollapsibleItem> _items;
   late String _headline;
-  AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
+  AssetImage _avatarImg = AssetImage('web/assets/logoWeb.png');
   final AuthService auth = AuthService();
 
   @override
@@ -60,18 +60,18 @@ class _AdminEventList extends State<AdminEventList> {
   @override
   List<CollapsibleItem> get _generateItems {
     return [
-           CollapsibleItem(
+      CollapsibleItem(
         text: 'Liste des events',
         icon: Icons.search,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   EventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -79,13 +79,27 @@ class _AdminEventList extends State<AdminEventList> {
         icon: Icons.event,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ParticipationPage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ParticipationPage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Mon Profil',
+        icon: Icons.face,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -93,13 +107,13 @@ class _AdminEventList extends State<AdminEventList> {
         icon: Icons.create,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   CreateEventScreen(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  CreateEventScreen(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -107,29 +121,15 @@ class _AdminEventList extends State<AdminEventList> {
         icon: Icons.manage_search,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   AdminEventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  AdminEventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
         isSelected: true,
-      ),
-      CollapsibleItem(
-        text: 'Mon Profil',
-        icon: Icons.face,
-        onPressed: () {
-          Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ProfilePage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
-        },
       ),
 
       // CollapsibleItem(
@@ -337,6 +337,9 @@ class MyCustomMobileContent extends StatelessWidget {
                     // ---------- Container De l'event ----------
                     final DocumentSnapshot documentSnapshot =
                         Streamsnapshot.data!.docs[index];
+                    DateTime date = (documentSnapshot['Date'].toDate());
+                    var format = DateFormat('dd/MM/yyyy');
+                    var goodDate = format.format(date);
                     return Container(
                       height: 260,
                       margin: const EdgeInsets.only(
@@ -402,7 +405,7 @@ class MyCustomMobileContent extends StatelessWidget {
                                             const Icon(
                                                 Icons.calendar_today_rounded),
                                             Text(
-                                              " ${documentSnapshot['Date'].toDate().toString().split(" ")[0]}",
+                                              goodDate,
                                               style:
                                                   const TextStyle(fontSize: 16),
                                             )
@@ -481,37 +484,9 @@ class MyCustomMobileContent extends StatelessWidget {
                                               const SizedBox(
                                                 width: 20,
                                               ),
-                                              TextButton.icon(
-                                                onPressed: () {
-                                                  deleteUserEvent(
-                                                      documentSnapshot.id);
-                                                  deleteEvent(
-                                                      documentSnapshot.id);
-                                                  Future.delayed(
-                                                      const Duration(
-                                                          milliseconds: 500),
-                                                      () {
-                                                    Navigator.pushNamed(
-                                                      context,
-                                                      '/event/list/admin',
-                                                    );
-                                                  });
-                                                },
-                                                icon: const Icon(Icons
-                                                    .remove_circle_outline),
-                                                label: const Text("Supprimer"),
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(
-                                                    const Color.fromARGB(
-                                                        255, 199, 16, 16),
-                                                  ),
-                                                  foregroundColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(Colors.white),
-                                                ),
-                                              ),
+                                              SupprButton(
+                                                  documentSnapshot:
+                                                      documentSnapshot)
                                             ],
                                           )
                                         ],
@@ -564,15 +539,20 @@ class MyCustomDesktopContent extends StatelessWidget {
                     // ---------- Container De l'event ----------
                     final DocumentSnapshot documentSnapshot =
                         Streamsnapshot.data!.docs[index];
+                    DateTime date = (documentSnapshot['Date'].toDate());
+                    var format = DateFormat('dd/MM/yyyy');
+                    var goodDate = format.format(date);
                     // ---------- Container De l'event ----------
                     //
                     return Container(
-                      height: 400,
+                      height: 340,
                       margin: const EdgeInsets.only(
                           left: 18.0, right: 18.0, top: 25, bottom: 15),
                       padding: const EdgeInsets.only(
                         top: 2,
                         bottom: 2,
+                        left: 30,
+                        right: 30,
                       ),
                       decoration: const BoxDecoration(
                         color: Color.fromRGBO(250, 250, 250, 1),
@@ -610,7 +590,7 @@ class MyCustomDesktopContent extends StatelessWidget {
                                 // ---------- Container des informations de l'event ----------
                                 //
                                 Container(
-                                  height: 350,
+                                  height: 300,
                                   padding: const EdgeInsets.all(10),
                                   margin: const EdgeInsets.only(
                                       top: 2, left: 5, right: 5, bottom: 2),
@@ -631,11 +611,20 @@ class MyCustomDesktopContent extends StatelessWidget {
                                       Column(
                                         children: [
                                           Container(
-                                            width: 450,
-                                            height: 300,
-                                            decoration: const BoxDecoration(
-                                                color: Colors.black),
-                                          )
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.35,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.35,
+                                              decoration: const BoxDecoration(
+                                                  image: DecorationImage(
+                                                image: AssetImage(
+                                                    "web/assets/illustration.png"),
+                                                fit: BoxFit.fill,
+                                              ))),
                                         ],
                                       ),
                                       const SizedBox(
@@ -651,7 +640,7 @@ class MyCustomDesktopContent extends StatelessWidget {
                                               const Icon(
                                                   Icons.calendar_today_rounded),
                                               Text(
-                                                " ${documentSnapshot['Date'].toDate().toString().split(" ")[0]}",
+                                                goodDate,
                                                 style: const TextStyle(
                                                     fontSize: 16),
                                               ),
@@ -735,37 +724,9 @@ class MyCustomDesktopContent extends StatelessWidget {
                                               const SizedBox(
                                                 width: 20,
                                               ),
-                                              TextButton.icon(
-                                                onPressed: () {
-                                                  deleteUserEvent(
-                                                      documentSnapshot.id);
-                                                  deleteEvent(
-                                                      documentSnapshot.id);
-                                                  Future.delayed(
-                                                      const Duration(
-                                                          milliseconds: 500),
-                                                      () {
-                                                    Navigator.pushNamed(
-                                                      context,
-                                                      '/event/list/admin',
-                                                    );
-                                                  });
-                                                },
-                                                icon: const Icon(Icons
-                                                    .remove_circle_outline),
-                                                label: const Text("Supprimer"),
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(
-                                                    const Color.fromARGB(
-                                                        255, 199, 16, 16),
-                                                  ),
-                                                  foregroundColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(Colors.white),
-                                                ),
-                                              ),
+                                              SupprButton(
+                                                  documentSnapshot:
+                                                      documentSnapshot)
                                             ],
                                           )
                                         ],
@@ -784,6 +745,51 @@ class MyCustomDesktopContent extends StatelessWidget {
           }
           return const CircularProgressIndicator();
         });
+  }
+}
+
+class SupprButton extends StatelessWidget {
+  const SupprButton({
+    Key? key,
+    required this.documentSnapshot,
+  }) : super(key: key);
+
+  final DocumentSnapshot<Object?> documentSnapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          title: const Text("Suppression"),
+          content: const Text("Souhaitez-vous supprimer cet évenement ?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                deleteUserEvent(documentSnapshot.id);
+                deleteEvent(documentSnapshot.id);
+                Navigator.pop(context, 'Oui !');
+              },
+              child: const Text('Oui...'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Non !'),
+              child: const Text('Non !'),
+            ),
+          ],
+        ),
+      ),
+      icon: const Icon(Icons.remove_circle_outline),
+      label: const Text("Supprimer"),
+      style: ButtonStyle(
+        backgroundColor:
+            MaterialStateProperty.all<Color>(Color.fromARGB(255, 255, 2, 2)),
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+      ),
+    );
   }
 }
 

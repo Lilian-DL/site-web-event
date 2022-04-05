@@ -53,31 +53,61 @@ class _ProfilePageState extends State<ProfilePage> {
   User? result = FirebaseAuth.instance.currentUser;
   late List<CollapsibleItem> _items;
   late String _headline;
-  AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
+  AssetImage _avatarImg = AssetImage('web/assets/logoWeb.png');
   final AuthService auth = AuthService();
 
   @override
   void initState() {
     super.initState();
-    _items = _generateItems;
+    _items = _generateUserItems;
+    CheckItem();
     _headline = _items.firstWhere((item) => item.isSelected).text;
+  }
+
+  Future CheckItem() async {
+    bool boolean = await checkItemBool();
+    if (boolean == true) {
+      setState(() {
+        _items = _generateItems;
+      });
+    } else {
+      setState(() {
+        _items = _generateUserItems;
+      });
+    }
+  }
+
+  Future<bool> checkItemBool() async {
+    User? result = FirebaseAuth.instance.currentUser;
+    bool boolean = await FirebaseFirestore.instance
+        .collection('User')
+        .doc(result!.uid)
+        .get()
+        .then((value) {
+      if (value['Admin'] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return boolean;
   }
 
   @override
   List<CollapsibleItem> get _generateItems {
     return [
-            CollapsibleItem(
+      CollapsibleItem(
         text: 'Liste des events',
         icon: Icons.search,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   EventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -85,41 +115,13 @@ class _ProfilePageState extends State<ProfilePage> {
         icon: Icons.event,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ParticipationPage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
-        },
-      ),
-      CollapsibleItem(
-        text: '(A) Création événement',
-        icon: Icons.create,
-        onPressed: () {
-          Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   CreateEventScreen(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
-        },
-      ),
-      CollapsibleItem(
-        text: '(A) Liste événement',
-        icon: Icons.manage_search,
-        onPressed: () {
-          Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   AdminEventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ParticipationPage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -127,13 +129,113 @@ class _ProfilePageState extends State<ProfilePage> {
         icon: Icons.face,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ProfilePage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+        isSelected: true,
+      ),
+      CollapsibleItem(
+        text: '(A) Création événement',
+        icon: Icons.create,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const CreateEventScreen(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: '(A) Liste événement',
+        icon: Icons.manage_search,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const AdminEventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+
+      // CollapsibleItem(
+      //   text: 'Face',
+      //   icon: Icons.face,
+      //   onPressed: () => setState(() => _headline = 'Face'),
+      // ),
+
+      CollapsibleItem(
+        text: 'Deconexion',
+        icon: Icons.exit_to_app,
+        onPressed: () {
+          auth.signOut();
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ChoiceLogin(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        },
+      ),
+    ];
+  }
+
+  @override
+  List<CollapsibleItem> get _generateUserItems {
+    return [
+      CollapsibleItem(
+        text: 'Liste des events',
+        icon: Icons.search,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Mes participations',
+        icon: Icons.event,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ParticipationPage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Mon Profil',
+        icon: Icons.face,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
         isSelected: true,
       ),
@@ -427,8 +529,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       // ---------- Nombre de participations ---------- //
                       Card(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 8.0),
+                        color: const Color.fromARGB(31, 236, 236, 236),
+                        margin: const EdgeInsets.only(left: 50.0, right: 50.0),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
@@ -440,9 +542,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Text(
                                       "Ceci est une description de ma personne",
                                       style: TextStyle(
-                                          color: Color.fromRGBO(36, 45, 165, 1),
-                                          fontSize: 22.0,
-                                          fontWeight: FontWeight.w600),
+                                          color: Colors.black54,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     SizedBox(
                                       height: 7,

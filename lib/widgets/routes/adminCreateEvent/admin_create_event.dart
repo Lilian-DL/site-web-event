@@ -1,6 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
-import 'package:collapsible_sidebar/collapsible_sidebar/collapsible_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:web_plan/services/auth.dart';
@@ -9,10 +10,9 @@ import 'package:web_plan/widgets/routes/eventList/event_list.dart';
 import 'package:web_plan/widgets/routes/menuConnexion/menu_connexion.dart';
 import 'package:web_plan/widgets/routes/participationsPage/participations_page.dart';
 import 'package:web_plan/widgets/routes/profilePage/profile_page.dart';
-import 'package:web_plan/widgets/slideBar/slide_bar.dart';
 
 class CreateEventScreen extends StatefulWidget {
-  CreateEventScreen({Key? key}) : super(key: key);
+  const CreateEventScreen({Key? key}) : super(key: key);
 
   @override
   State<CreateEventScreen> createState() => _CreateEventScreenState();
@@ -25,7 +25,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   final detailController = TextEditingController();
   final adressController = TextEditingController();
   final peopleController = TextEditingController();
-  String message1 = 'Drop something here';
+  /* String message1 = 'Drop something here'; */
+  String messageError = "";
   bool highlighted1 = false;
   late DateTime pickedDate;
   late TimeOfDay time;
@@ -33,8 +34,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   var WhitelistingTextInputFormatter;
 
   late List<CollapsibleItem> _items;
-  late String _headline;
-  AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
+  final AssetImage _avatarImg = const AssetImage('web/assets/logoWeb.png');
   final AuthService auth = AuthService();
 
   @override
@@ -43,10 +43,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     pickedDate = DateTime.now();
     time = TimeOfDay.now();
     _items = _generateItems;
-    _headline = _items.firstWhere((item) => item.isSelected).text;
   }
 
-  @override
   List<CollapsibleItem> get _generateItems {
     return [
       CollapsibleItem(
@@ -54,13 +52,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         icon: Icons.search,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   EventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -68,13 +66,27 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         icon: Icons.event,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ParticipationPage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ParticipationPage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Mon Profil',
+        icon: Icons.face,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -82,13 +94,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         icon: Icons.create,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   CreateEventScreen(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const CreateEventScreen(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
         isSelected: true,
       ),
@@ -97,36 +109,15 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         icon: Icons.manage_search,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   AdminEventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const AdminEventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
-      CollapsibleItem(
-        text: 'Mon Profil',
-        icon: Icons.face,
-        onPressed: () {
-          Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ProfilePage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
-        },
-      ),
-
-      // CollapsibleItem(
-      //   text: 'Face',
-      //   icon: Icons.face,
-      //   onPressed: () => setState(() => _headline = 'Face'),
-      // ),
-
       CollapsibleItem(
         text: 'Deconexion',
         icon: Icons.exit_to_app,
@@ -189,7 +180,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 onTitleTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => EventList()),
+                    MaterialPageRoute(builder: (context) => const EventList()),
                   );
                 },
                 // onTitleTap: () {
@@ -256,7 +247,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         alignment: Alignment.center,
         key: formKey,
         child: ListView(children: <Widget>[
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
           Container(
             padding: const EdgeInsets.all(20),
             decoration: const BoxDecoration(
@@ -277,7 +268,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   child: TextFormField(
                     controller: titleController,
                     decoration: const InputDecoration(
-                      labelText: "Title",
+                      labelText: "Titre",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -289,7 +280,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   child: TextFormField(
                     controller: detailController,
                     decoration: const InputDecoration(
-                      labelText: "Detail",
+                      labelText: "Description",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -304,14 +295,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   child: TextFormField(
                     controller: adressController,
                     decoration: const InputDecoration(
-                      labelText: "Adress",
+                      labelText: "Lieu de déroulement",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
                   ),
                 ),
-                Padding(
+                /* Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     height: 100.0,
@@ -330,7 +321,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         .pickFiles(mime: ['image/jpeg', 'image/png']));*/
                   },
                   child: const Text('Pick file'),
-                ),
+                ), */
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -338,15 +329,15 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     children: <Widget>[
                       ListTile(
                         title: Text(
-                            "Date :  ${pickedDate.day}, ${pickedDate.month}, ${pickedDate.year}"),
+                            "Date :  ${pickedDate.day}/${pickedDate.month}/${pickedDate.year}"),
                         trailing: const Icon(Icons.keyboard_arrow_down),
                         onTap: _pickDate,
                       ),
-                      ListTile(
+                      /* ListTile(
                         title: Text("Hour :  ${time.hour}:${time.minute}"),
                         trailing: const Icon(Icons.keyboard_arrow_down),
                         onTap: _pickTime,
-                      ),
+                      ), */
                     ],
                   ),
                 ),
@@ -355,16 +346,29 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   child: TextFormField(
                     controller: peopleController,
                     decoration: const InputDecoration(
-                      labelText: "People Max",
+                      labelText: "Places disponibles",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
+                Text(
+                  messageError,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.red,
+                    fontFamily: 'Roboto',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 20.0),
                 Center(
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color.fromRGBO(30, 64, 175, 1),
+                    ),
                     onPressed: () {
                       if (titleController.text.isNotEmpty &&
                           detailController.text.isNotEmpty &&
@@ -380,13 +384,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           );
                         });
                       } else {
-                        print("error");
+                        setState(() {});
+                        messageError = "Tous les champs doivent être remplis";
                       }
                     },
-                    child: Text('Save'),
+                    child: const Text('Envoyer'),
                   ),
                 ),
-                SizedBox(height: 30.0),
+                const SizedBox(height: 30.0),
               ],
             ),
           ),
@@ -396,6 +401,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   _pickDate() async {
     DateTime? date = await showDatePicker(
       context: context,
+      locale: const Locale("fr", "FR"),
       firstDate: DateTime(DateTime.now().year - 5),
       lastDate: DateTime(DateTime.now().year + 5),
       initialDate: pickedDate,
@@ -407,19 +413,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       });
   }
 
-  _pickTime() async {
-    TimeOfDay? t = await showTimePicker(
-      context: context,
-      initialTime: time,
-    );
-    if (t != null)
-      // ignore: curly_braces_in_flow_control_structures
-      setState(() {
-        time = t;
-      });
-  }
-
-  Widget buildZone1(BuildContext context) => Builder(
+  /* Widget buildZone1(BuildContext context) => Builder(
         builder: (context) => DropzoneView(
           operation: DragOperation.copy,
           cursor: CursorType.grab,
@@ -447,7 +441,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             print('Zone 1 drop multiple: $ev');
           },
         ),
-      );
+      ); */
 }
 
 Future<void> addEvent(title, description, location, peopleLimit, date) {

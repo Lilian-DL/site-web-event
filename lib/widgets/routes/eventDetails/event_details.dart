@@ -25,74 +25,76 @@ class EventDetails extends StatefulWidget {
 class _EventDetailsState extends State<EventDetails> {
   late List<CollapsibleItem> _items;
   late String _headline;
-  AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
+  AssetImage _avatarImg = AssetImage('web/assets/logoWeb.png');
   final AuthService auth = AuthService();
 
   @override
   void initState() {
     super.initState();
-    _items = _generateItems;
+    _items = _generateUserItems;
+    CheckItem();
     _headline = _items.firstWhere((item) => item.isSelected).text;
+  }
+
+  Future CheckItem() async {
+    bool boolean = await checkItemBool();
+    if (boolean == true) {
+      setState(() {
+        _items = _generateItems;
+      });
+    } else {
+      setState(() {
+        _items = _generateUserItems;
+      });
+    }
+  }
+
+  Future<bool> checkItemBool() async {
+    User? result = FirebaseAuth.instance.currentUser;
+    bool boolean = await FirebaseFirestore.instance
+        .collection('User')
+        .doc(result!.uid)
+        .get()
+        .then((value) {
+      if (value['Admin'] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return boolean;
   }
 
   @override
   List<CollapsibleItem> get _generateItems {
     return [
-            CollapsibleItem(
+      CollapsibleItem(
         text: 'Liste des events',
         icon: Icons.search,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   EventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
-      isSelected: true,
+        isSelected: true,
       ),
       CollapsibleItem(
         text: 'Mes participations',
         icon: Icons.event,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ParticipationPage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
-        },
-      ),
-      CollapsibleItem(
-        text: '(A) Création événement',
-        icon: Icons.create,
-        onPressed: () {
-          Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   CreateEventScreen(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
-        },
-      ),
-      CollapsibleItem(
-        text: '(A) Liste événement',
-        icon: Icons.manage_search,
-        onPressed: () {
-          Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   AdminEventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ParticipationPage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -100,15 +102,115 @@ class _EventDetailsState extends State<EventDetails> {
         icon: Icons.face,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ProfilePage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
+      CollapsibleItem(
+        text: '(A) Création événement',
+        icon: Icons.create,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  CreateEventScreen(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: '(A) Liste événement',
+        icon: Icons.manage_search,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  AdminEventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      // CollapsibleItem(
+      //   text: 'Face',
+      //   icon: Icons.face,
+      //   onPressed: () => setState(() => _headline = 'Face'),
+      // ),
+
+      CollapsibleItem(
+        text: 'Deconexion',
+        icon: Icons.exit_to_app,
+        onPressed: () {
+          auth.signOut();
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ChoiceLogin(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        },
+      ),
+    ];
+  }
+
+  @override
+  List<CollapsibleItem> get _generateUserItems {
+    return [
+      CollapsibleItem(
+        text: 'Liste des events',
+        icon: Icons.search,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+        isSelected: true,
+      ),
+      CollapsibleItem(
+        text: 'Mes participations',
+        icon: Icons.event,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ParticipationPage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+      CollapsibleItem(
+        text: 'Mon Profil',
+        icon: Icons.face,
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
+      ),
+
       // CollapsibleItem(
       //   text: 'Face',
       //   icon: Icons.face,
@@ -271,151 +373,175 @@ Widget _body(Size size, BuildContext context, String id) {
               child: ListView(
                 children: [
                   Card(
-                      elevation: 5,
-                      margin: const EdgeInsets.all(16.0),
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30)),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.10,
-                              decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 49, 49, 49),
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30),
-                                  )),
-                              width: double.maxFinite,
-                              child: Center(
-                                child: Text(
-                                  '${data['Title']}',
-                                  textAlign: TextAlign.start,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 36,
-                                  ),
+                    elevation: 5,
+                    margin: const EdgeInsets.only(
+                      top: 25,
+                      left: 50.0,
+                      right: 25,
+                    ),
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            decoration: const BoxDecoration(
+                                color: Color.fromARGB(255, 245, 245, 245),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
+                                )),
+                            width: double.maxFinite,
+                            child: Center(
+                              child: Text(
+                                '${data['Title']}',
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
                                 ),
                               ),
                             ),
-                            Row(
+                          ),
+                          Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    ClipRRect(
+                                    /*ClipRRect(
                                       borderRadius: BorderRadius.circular(5),
-                                      child: Image.network(
-                                        'https://media.discordapp.net/attachments/902535167850197022/935814927443165254/unknown.png',
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.60,
+                                      child: AssetImage('illustration.png'),
+                                    ),*/
+                                    Container(
                                         height:
-                                            MediaQuery.of(context).size.width *
-                                                0.50,
-                                      ),
-                                    ),
+                                            MediaQuery.of(context).size.height *
+                                                0.40,
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.40,
+                                        decoration: const BoxDecoration(
+                                            image: DecorationImage(
+                                          image: AssetImage(
+                                              "web/assets/illustration.png"),
+                                          fit: BoxFit.fill,
+                                        ))),
 
                                     // SizedBox(width: MediaQuery.of(context).size.width * 0.10),
-
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 235, 235, 235),
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                          color: const Color.fromARGB(
-                                              255, 235, 235, 235),
-                                          width: 4,
+                                    Column(
+                                      children: [
+                                        const SizedBox(
+                                          height: 5,
                                         ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          const Icon(Icons.location_on),
-                                          Text(
-                                            "${data['Location']}",
+                                        Row(
+                                          children: [
+                                            Container(
+                                              alignment: Alignment.centerLeft,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(
+                                                    255, 235, 235, 235),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                border: Border.all(
+                                                  color: const Color.fromARGB(
+                                                      255, 235, 235, 235),
+                                                  width: 4,
+                                                ),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  const Icon(Icons.location_on),
+                                                  Text(
+                                                    "${data['Location']}",
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(
+                                                    255, 235, 235, 235),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                border: Border.all(
+                                                  color: const Color.fromARGB(
+                                                      255, 235, 235, 235),
+                                                  width: 4,
+                                                ),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  const Icon(Icons.person),
+                                                  Text(
+                                                      " ${data['Users'].length}/${data['PeopleLimit']}"),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                255, 235, 235, 235),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: const Color.fromARGB(
+                                                  255, 235, 235, 235),
+                                              width: 4,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              const Icon(Icons.calendar_today),
+                                              Text(
+                                                  ' ${data['Date'].toDate().toString().split(" ")[0]} '
+                                                  '${data['Date'].toDate().toString().split(" ")[1].substring(0, 5)}'),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                255, 235, 235, 235),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: const Color.fromARGB(
+                                                  255, 235, 235, 235),
+                                              width: 4,
+                                            ),
+                                          ),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.30,
+                                          padding: const EdgeInsets.all(10),
+                                          child: Text(
+                                            '${data['Description']}',
                                             textAlign: TextAlign.start,
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 235, 235, 235),
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                          color: const Color.fromARGB(
-                                              255, 235, 235, 235),
-                                          width: 4,
                                         ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          const Icon(Icons.calendar_today),
-                                          Text(
-                                              ' ${data['Date'].toDate().toString().split(" ")[0]} '
-                                              '${data['Date'].toDate().toString().split(" ")[1].substring(0, 5)}'),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 235, 235, 235),
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                          color: const Color.fromARGB(
-                                              255, 235, 235, 235),
-                                          width: 4,
+                                        const SizedBox(
+                                          height: 50,
                                         ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          const Icon(Icons.person),
-                                          Text(
-                                              " ${data['Users'].length}/${data['PeopleLimit']}"),
-                                        ],
-                                      ),
+                                        myEvent(idEvent: id.toString()),
+                                      ],
                                     ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 235, 235, 235),
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                          color: const Color.fromARGB(
-                                              255, 235, 235, 235),
-                                          width: 4,
-                                        ),
-                                      ),
-                                      width: MediaQuery.of(context).size.width *
-                                          0.50,
-                                      padding: const EdgeInsets.all(10),
-                                      child: Text(
-                                        '${data['Description']}',
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 50,
-                                    ),
-                                    myEvent(idEvent: id.toString()),
+
                                     /*ElevatedButton(
                                       onPressed: () => showDialog<String>(
                                         context: context,
@@ -452,12 +578,12 @@ Widget _body(Size size, BuildContext context, String id) {
                                       height: 30,
                                     )
                                   ],
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ))
+                                ),
+                              ]),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ));
         }

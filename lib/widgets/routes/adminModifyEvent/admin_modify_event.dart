@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar/collapsible_item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:web_plan/services/auth.dart';
@@ -32,7 +33,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
   final detailController = TextEditingController();
   final adressController = TextEditingController();
   final peopleController = TextEditingController();
-  String message1 = 'Drop something here';
+  /* String message1 = 'Drop something here'; */
+  String messageError = "";
   bool highlighted1 = false;
   late DateTime pickedDate;
   late TimeOfDay time;
@@ -40,7 +42,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
   var WhitelistingTextInputFormatter;
   late List<CollapsibleItem> _items;
   late String _headline;
-  AssetImage _avatarImg = AssetImage('../assets/logoWeb.png');
+  AssetImage _avatarImg = const AssetImage('web/assets/logoWeb.png');
   final AuthService auth = AuthService();
 
   @override
@@ -55,18 +57,18 @@ class _EditEventScreenState extends State<EditEventScreen> {
   @override
   List<CollapsibleItem> get _generateItems {
     return [
-            CollapsibleItem(
+      CollapsibleItem(
         text: 'Liste des events',
         icon: Icons.search,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   EventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  EventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -74,13 +76,13 @@ class _EditEventScreenState extends State<EditEventScreen> {
         icon: Icons.event,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ParticipationPage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ParticipationPage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -88,13 +90,13 @@ class _EditEventScreenState extends State<EditEventScreen> {
         icon: Icons.create,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   CreateEventScreen(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  CreateEventScreen(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
       CollapsibleItem(
@@ -102,14 +104,14 @@ class _EditEventScreenState extends State<EditEventScreen> {
         icon: Icons.manage_search,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   AdminEventList(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
-        }, 
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  AdminEventList(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
+        },
         isSelected: true,
       ),
       CollapsibleItem(
@@ -117,13 +119,13 @@ class _EditEventScreenState extends State<EditEventScreen> {
         icon: Icons.face,
         onPressed: () {
           Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                   ProfilePage(),
-                transitionDuration: const Duration(seconds: 0),
-              ),
-            );
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ProfilePage(),
+              transitionDuration: const Duration(seconds: 0),
+            ),
+          );
         },
       ),
 
@@ -196,7 +198,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                 onTitleTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => EventList()),
+                    MaterialPageRoute(builder: (context) => const EventList()),
                   );
                 },
                 // onTitleTap: () {
@@ -263,7 +265,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
         alignment: Alignment.center,
         key: formKey,
         child: ListView(children: <Widget>[
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
           Container(
             padding: const EdgeInsets.all(20),
             decoration: const BoxDecoration(
@@ -284,7 +286,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   child: TextFormField(
                     controller: titleController,
                     decoration: const InputDecoration(
-                      hintText: "Title",
+                      hintText: "Titre",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -296,7 +298,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   child: TextFormField(
                     controller: detailController,
                     decoration: const InputDecoration(
-                      hintText: "Detail",
+                      hintText: "Description",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -311,14 +313,14 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   child: TextFormField(
                     controller: adressController,
                     decoration: const InputDecoration(
-                      hintText: "Adress",
+                      hintText: "Lieu de déroulement",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
                   ),
                 ),
-                Padding(
+                /* Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     height: 100.0,
@@ -337,7 +339,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                         .pickFiles(mime: ['image/jpeg', 'image/png']));*/
                   },
                   child: const Text('Pick file'),
-                ),
+                ), */
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -345,15 +347,15 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     children: <Widget>[
                       ListTile(
                         title: Text(
-                            "Date :  ${pickedDate.day}, ${pickedDate.month}, ${pickedDate.year}"),
-                        trailing: Icon(Icons.keyboard_arrow_down),
+                            "Date :  ${pickedDate.day}/${pickedDate.month}/${pickedDate.year}"),
+                        trailing: const Icon(Icons.keyboard_arrow_down),
                         onTap: _pickDate,
                       ),
-                      ListTile(
+                      /* ListTile(
                         title: Text("Hour :  ${time.hour}:${time.minute}"),
                         trailing: Icon(Icons.keyboard_arrow_down),
                         onTap: _pickTime,
-                      ),
+                      ), */
                     ],
                   ),
                 ),
@@ -362,16 +364,29 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   child: TextFormField(
                     controller: peopleController,
                     decoration: const InputDecoration(
-                      hintText: "People Max",
+                      hintText: "Places disponibles",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
+                Text(
+                  messageError,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.red,
+                    fontFamily: 'Roboto',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 20.0),
                 Center(
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color.fromRGBO(30, 64, 175, 1),
+                    ),
                     onPressed: () {
                       if (titleController.text.isNotEmpty &&
                           detailController.text.isNotEmpty &&
@@ -392,13 +407,14 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           );
                         });
                       } else {
-                        print("error");
+                        setState(() {});
+                        messageError = "Tous les champs doivent être remplis";
                       }
                     },
-                    child: Text('Save'),
+                    child: const Text('Envoyer'),
                   ),
                 ),
-                SizedBox(height: 30.0),
+                const SizedBox(height: 30.0),
               ],
             ),
           ),
@@ -408,6 +424,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
   _pickDate() async {
     DateTime? date = await showDatePicker(
       context: context,
+      locale: const Locale("fr", "FR"),
       firstDate: DateTime(DateTime.now().year - 5),
       lastDate: DateTime(DateTime.now().year + 5),
       initialDate: pickedDate,
@@ -431,7 +448,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
       });
   }
 
-  Widget buildZone1(BuildContext context) => Builder(
+  /* Widget buildZone1(BuildContext context) => Builder(
         builder: (context) => DropzoneView(
           operation: DragOperation.copy,
           cursor: CursorType.grab,
@@ -459,7 +476,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
             print('Zone 1 drop multiple: $ev');
           },
         ),
-      );
+      ); */
 }
 
 Future<void> updateEvent(id, title, description, location, peopleLimit, date) {

@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   # file downloads
   path_provider: ^2.0.8
@@ -53,6 +55,15 @@ dependencies:
   collapsible_sidebar: ^2.0.1+2
   flutter_dropzone: ^3.0.5
 
+  flutter_launcher_icons: ^0.9.2
+
+flutter_icons:
+  image_path_android: "assets/calendar.png"
+  image_path_ios: "assets/calendar.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -76,8 +87,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/logoWeb.png
-    - assets/user.png
+    - web/assets/logoWeb.png
+    - web/assets/user.png
+    - web/assets/illustration.png
+    - web/assets/calendar.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
