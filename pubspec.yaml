@@ -89,7 +89,7 @@ flutter:
   assets:
     - web/assets/logoWeb.png
     - web/assets/user.png
-    - web/assets/illustration.png
+    - web/assets/bergues_beffroi.jpeg
     - web/assets/calendar.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

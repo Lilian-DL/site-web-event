@@ -146,7 +146,7 @@ class _EventDetailsState extends State<EventDetails> {
       // ),
 
       CollapsibleItem(
-        text: 'Deconexion',
+        text: 'Déconnexion',
         icon: Icons.exit_to_app,
         onPressed: () {
           auth.signOut();
@@ -218,7 +218,7 @@ class _EventDetailsState extends State<EventDetails> {
       // ),
 
       CollapsibleItem(
-        text: 'Deconexion',
+        text: 'Déconnexion',
         icon: Icons.exit_to_app,
         onPressed: () {
           auth.signOut();
@@ -414,7 +414,7 @@ Widget _body(Size size, BuildContext context, String id) {
                                   children: [
                                     /*ClipRRect(
                                       borderRadius: BorderRadius.circular(5),
-                                      child: AssetImage('illustration.png'),
+                                      child: AssetImage('bergues_beffroi.jpeg'),
                                     ),*/
                                     Container(
                                         height:
@@ -426,7 +426,7 @@ Widget _body(Size size, BuildContext context, String id) {
                                         decoration: const BoxDecoration(
                                             image: DecorationImage(
                                           image: AssetImage(
-                                              "web/assets/illustration.png"),
+                                              "web/assets/bergues_beffroi.jpeg"),
                                           fit: BoxFit.fill,
                                         ))),
 

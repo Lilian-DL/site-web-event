@@ -136,7 +136,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
       // ),
 
       CollapsibleItem(
-        text: 'Deconexion',
+        text: 'Déconnexion',
         icon: Icons.exit_to_app,
         onPressed: () {
           auth.signOut();
