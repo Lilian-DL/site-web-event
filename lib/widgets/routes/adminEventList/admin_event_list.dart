@@ -724,9 +724,15 @@ class MyCustomDesktopContent extends StatelessWidget {
                                               const SizedBox(
                                                 width: 20,
                                               ),
+                                              UserButton(
+                                                  documentSnapshot:
+                                                      documentSnapshot),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
                                               SupprButton(
                                                   documentSnapshot:
-                                                      documentSnapshot)
+                                                      documentSnapshot),
                                             ],
                                           )
                                         ],
@@ -744,6 +750,89 @@ class MyCustomDesktopContent extends StatelessWidget {
             );
           }
           return const CircularProgressIndicator();
+        });
+  }
+}
+
+class UserButton extends StatelessWidget {
+  const UserButton({
+    Key? key,
+    required this.documentSnapshot,
+  }) : super(key: key);
+
+  final DocumentSnapshot<Object?> documentSnapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          title: const Text("Participants"),
+          content: SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height *
+                  0.6, // Change as per your requirement
+              width: MediaQuery.of(context).size.width * 0.3,
+              child: ListView.builder(
+                itemCount: documentSnapshot['Users'].length,
+                itemBuilder: (BuildContext context, int index) {
+                  return listUser(
+                      idUser: documentSnapshot['Users'][index].toString());
+                },
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Fermer !');
+              },
+              child: const Text('Fermer !'),
+            ),
+          ],
+        ),
+      ),
+      icon: const Icon(Icons.remove_circle_outline),
+      label: const Text("Liste des Participants"),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(
+          Color.fromARGB(255, 11, 17, 105),
+        ),
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+      ),
+    );
+  }
+}
+
+class listUser extends StatelessWidget {
+  const listUser({Key? key, required this.idUser}) : super(key: key);
+
+  final String idUser;
+
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference user = FirebaseFirestore.instance.collection('User');
+    return FutureBuilder<DocumentSnapshot>(
+        future: user.doc(idUser).get(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Something went wrong");
+          }
+
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return Text("Document does not exist");
+          }
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            return Text("${data['FirstName']} ${data['LastName']}");
+          }
+
+          return Text("loading");
         });
   }
 }
