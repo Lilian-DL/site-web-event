@@ -101,12 +101,13 @@ class _ChoiceLogin extends State<ChoiceLogin> {
                         ),
                       ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.10),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                     const DownloadButton(
                         url:
                             "https://firebasestorage.googleapis.com/v0/b/planification-8efe7.appspot.com/o/apk_mobile%2Fapp-release.apk?alt=media&token=dcd750cb-f387-47b8-9e55-929f9fc6764b"),
                   ],
                 ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               ],
             ),
           ),
