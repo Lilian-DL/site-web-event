@@ -119,7 +119,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         },
       ),
       CollapsibleItem(
-        text: 'Deconexion',
+        text: 'Déconnexion',
         icon: Icons.exit_to_app,
         onPressed: () {
           auth.signOut();

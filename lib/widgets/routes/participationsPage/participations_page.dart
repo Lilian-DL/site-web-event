@@ -146,7 +146,7 @@ class _ParticipationPage extends State<ParticipationPage> {
       // ),
 
       CollapsibleItem(
-        text: 'Deconexion',
+        text: 'Déconnexion',
         icon: Icons.exit_to_app,
         onPressed: () {
           auth.signOut();
@@ -646,14 +646,14 @@ class MyCustomDesktopContent extends StatelessWidget {
                                   Container(
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.35,
+                                              0.30,
                                       width:
                                           MediaQuery.of(context).size.height *
-                                              0.35,
+                                              0.30,
                                       decoration: const BoxDecoration(
                                           image: DecorationImage(
                                         image: AssetImage(
-                                            "web/assets/illustration.png"),
+                                            "web/assets/bergues_beffroi.jpeg"),
                                         fit: BoxFit.fill,
                                       ))),
                                 ],

@@ -136,7 +136,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
       // ),
 
       CollapsibleItem(
-        text: 'Deconexion',
+        text: 'Déconnexion',
         icon: Icons.exit_to_app,
         onPressed: () {
           auth.signOut();
@@ -255,170 +255,173 @@ class _EditEventScreenState extends State<EditEventScreen> {
   }
 
   Widget _body(Size size, BuildContext context, String id) {
-    return Container(
-        constraints: const BoxConstraints(
-          minHeight: 500.0,
-          minWidth: 500.0,
-          maxHeight: 800.0,
-          maxWidth: 600,
-        ),
-        alignment: Alignment.center,
-        key: formKey,
-        child: ListView(children: <Widget>[
-          const SizedBox(height: 50),
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(25)),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                    color: Color.fromRGBO(0, 0, 0, 0.6),
-                    spreadRadius: 5,
-                    blurRadius: 29,
-                    offset: Offset(0, 0))
-              ],
-            ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: titleController,
-                    decoration: const InputDecoration(
-                      hintText: "Titre",
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
-                    ),
-                  ),
+    CollectionReference events = FirebaseFirestore.instance.collection('Event');
+    return FutureBuilder<DocumentSnapshot>(
+        future: events.doc(widget.id).get(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Something went wrong");
+          }
+
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return Text("Document does not exist");
+          }
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            return Container(
+                constraints: const BoxConstraints(
+                  minHeight: 500.0,
+                  minWidth: 500.0,
+                  maxHeight: 800.0,
+                  maxWidth: 600,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: detailController,
-                    decoration: const InputDecoration(
-                      hintText: "Description",
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
+                alignment: Alignment.center,
+                key: formKey,
+                child: ListView(children: <Widget>[
+                  const SizedBox(height: 50),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.6),
+                            spreadRadius: 5,
+                            blurRadius: 29,
+                            offset: Offset(0, 0))
+                      ],
                     ),
-                    keyboardType: TextInputType.multiline,
-                    minLines: 5,
-                    maxLines: 10,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: adressController,
-                    decoration: const InputDecoration(
-                      hintText: "Lieu de déroulement",
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
-                    ),
-                  ),
-                ),
-                /* Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 100.0,
-                    color: highlighted1 ? Colors.grey[400] : Colors.transparent,
-                    child: Stack(
+                    child: Column(
                       children: [
-                        buildZone1(context),
-                        Center(child: Text(message1)),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            initialValue: data['Title'],
+                            decoration: const InputDecoration(
+                              hintText: "Titre",
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0))),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            initialValue: data['Description'],
+                            decoration: const InputDecoration(
+                              hintText: "Description",
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0))),
+                            ),
+                            keyboardType: TextInputType.multiline,
+                            minLines: 5,
+                            maxLines: 10,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            initialValue: data['Location'],
+                            decoration: const InputDecoration(
+                              hintText: "Lieu de déroulement",
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0))),
+                            ),
+                          ),
+                        ),
+                        /* Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 100.0,
+                        color: highlighted1 ? Colors.grey[400] : Colors.transparent,
+                        child: Stack(
+                          children: [
+                            buildZone1(context),
+                            Center(child: Text(message1)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () /*async*/ {
+                        /*print(await controller1
+                            .pickFiles(mime: ['image/jpeg', 'image/png']));*/
+                      },
+                      child: const Text('Pick file'),
+                    ), */
+
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            initialValue: data['PeopleLimit'],
+                            decoration: const InputDecoration(
+                              hintText: "Places disponibles",
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0))),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          messageError,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontFamily: 'Roboto',
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 20.0),
+                        Center(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: const Color.fromRGBO(30, 64, 175, 1),
+                            ),
+                            onPressed: () {
+                              if (titleController.text.isNotEmpty &&
+                                  detailController.text.isNotEmpty &&
+                                  adressController.text.isNotEmpty &&
+                                  peopleController.text.isNotEmpty) {
+                                var people = int.parse(peopleController.text);
+                                updateEvent(
+                                    id,
+                                    titleController.text,
+                                    detailController.text,
+                                    adressController.text,
+                                    people,
+                                    pickedDate);
+                                Future.delayed(
+                                    const Duration(milliseconds: 500), () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/event/list/user',
+                                  );
+                                });
+                              } else {
+                                setState(() {});
+                                messageError =
+                                    "Tous les champs doivent être remplis";
+                              }
+                            },
+                            child: const Text('Envoyer'),
+                          ),
+                        ),
+                        const SizedBox(height: 30.0),
                       ],
                     ),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () /*async*/ {
-                    /*print(await controller1
-                        .pickFiles(mime: ['image/jpeg', 'image/png']));*/
-                  },
-                  child: const Text('Pick file'),
-                ), */
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      ListTile(
-                        title: Text(
-                            "Date :  ${pickedDate.day}/${pickedDate.month}/${pickedDate.year}"),
-                        trailing: const Icon(Icons.keyboard_arrow_down),
-                        onTap: _pickDate,
-                      ),
-                      /* ListTile(
-                        title: Text("Hour :  ${time.hour}:${time.minute}"),
-                        trailing: Icon(Icons.keyboard_arrow_down),
-                        onTap: _pickTime,
-                      ), */
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: peopleController,
-                    decoration: const InputDecoration(
-                      hintText: "Places disponibles",
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
-                    ),
-                  ),
-                ),
-                Text(
-                  messageError,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.red,
-                    fontFamily: 'Roboto',
-                    fontSize: 15,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 20.0),
-                Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: const Color.fromRGBO(30, 64, 175, 1),
-                    ),
-                    onPressed: () {
-                      if (titleController.text.isNotEmpty &&
-                          detailController.text.isNotEmpty &&
-                          adressController.text.isNotEmpty &&
-                          peopleController.text.isNotEmpty) {
-                        var people = int.parse(peopleController.text);
-                        updateEvent(
-                            id,
-                            titleController.text,
-                            detailController.text,
-                            adressController.text,
-                            people,
-                            pickedDate);
-                        Future.delayed(const Duration(milliseconds: 500), () {
-                          Navigator.pushNamed(
-                            context,
-                            '/event/list/user',
-                          );
-                        });
-                      } else {
-                        setState(() {});
-                        messageError = "Tous les champs doivent être remplis";
-                      }
-                    },
-                    child: const Text('Envoyer'),
-                  ),
-                ),
-                const SizedBox(height: 30.0),
-              ],
-            ),
-          ),
-        ]));
+                ]));
+          }
+
+          return Text("Loading");
+        });
   }
 
   _pickDate() async {
