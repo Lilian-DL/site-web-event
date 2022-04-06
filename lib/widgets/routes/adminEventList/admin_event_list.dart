@@ -484,6 +484,12 @@ class MyCustomMobileContent extends StatelessWidget {
                                               const SizedBox(
                                                 width: 20,
                                               ),
+                                              UserButton(
+                                                  documentSnapshot:
+                                                      documentSnapshot),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
                                               SupprButton(
                                                   documentSnapshot:
                                                       documentSnapshot)
