@@ -29,10 +29,6 @@ class EditEventScreen extends StatefulWidget {
 class _EditEventScreenState extends State<EditEventScreen> {
   final formKey = GlobalKey<FormState>();
   late DropzoneViewController controller1;
-  final titleController = TextEditingController();
-  final detailController = TextEditingController();
-  final adressController = TextEditingController();
-  final peopleController = TextEditingController();
   /* String message1 = 'Drop something here'; */
   String messageError = "";
   bool highlighted1 = false;
@@ -270,6 +266,13 @@ class _EditEventScreenState extends State<EditEventScreen> {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
+            final titleController = TextEditingController(text: data['Title']);
+            final detailController =
+                TextEditingController(text: data['Description']);
+            final adressController =
+                TextEditingController(text: data['Location']);
+            final peopleController =
+                TextEditingController(text: data['PeopleLimit'].toString());
             return Container(
                 constraints: const BoxConstraints(
                   minHeight: 500.0,
@@ -299,7 +302,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            initialValue: data['Title'],
+                            controller: titleController,
                             decoration: const InputDecoration(
                               hintText: "Titre",
                               border: OutlineInputBorder(
@@ -311,7 +314,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            initialValue: data['Description'],
+                            controller: detailController,
                             decoration: const InputDecoration(
                               hintText: "Description",
                               border: OutlineInputBorder(
@@ -326,7 +329,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            initialValue: data['Location'],
+                            controller: adressController,
                             decoration: const InputDecoration(
                               hintText: "Lieu de déroulement",
                               border: OutlineInputBorder(
@@ -359,7 +362,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            initialValue: data['PeopleLimit'],
+                            controller: peopleController,
                             decoration: const InputDecoration(
                               hintText: "Places disponibles",
                               border: OutlineInputBorder(
