@@ -218,7 +218,7 @@ class _ParticipationPage extends State<ParticipationPage> {
       // ),
 
       CollapsibleItem(
-        text: 'Deconexion',
+        text: 'Déconnexion',
         icon: Icons.exit_to_app,
         onPressed: () {
           auth.signOut();
