@@ -1,16 +1,15 @@
-# web_plan
+# event website
 
-A new Flutter project.
+an event website in flutter with firebase in back.
 
-## Getting Started
+## Screens
 
-This project is a starting point for a Flutter application.
+![connexion](https://user-images.githubusercontent.com/58983575/163024431-8c14d8d9-3db7-4527-816a-653d49d64bf0.jpg)
 
-A few resources to get you started if this is your first Flutter project:
+![EventList](https://user-images.githubusercontent.com/58983575/163024469-ca03975b-b2ee-4579-a90e-1271930b9b05.jpg)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+![eventListAdmin](https://user-images.githubusercontent.com/58983575/163024484-248112ec-8913-4053-844b-1f95b4b328b4.jpg)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![EditEvent](https://user-images.githubusercontent.com/58983575/163024511-d643e244-e236-48be-b66c-b28c18ce02b2.jpg)
+
+![createEvent](https://user-images.githubusercontent.com/58983575/163024498-dc44f68f-da8c-43c4-904e-b677e643640c.jpg)
